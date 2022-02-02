@@ -3,6 +3,7 @@ package com.luckycart.samplesdk
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.luckycart.model.BannerDetails
 import com.luckycart.model.Banners
 import com.luckycart.model.LCAuthorization
 import com.luckycart.sdk.LuckCartSDK
@@ -20,10 +21,16 @@ class MainActivity : AppCompatActivity(), LuckyCartListenerCallback {
         luckyCartSDK?.setUser(CUSTOMER_ID)
         luckyCartSDK?.setActionListener(this)
         luckyCartSDK?.listAvailableBanners()
+        luckyCartSDK?.getBannerDetails("categories","banner_100")
     }
 
     override fun listAvailableBanners(banners: Banners) {
         Log.d("listAvailableBanners", "" + banners)
+    }
+
+    override fun getBannerDetails(banners: BannerDetails) {
+        Log.d("getBannerDetails", "" + banners)
+
     }
 
 
