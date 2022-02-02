@@ -1,27 +1,28 @@
-package com.luckycart.samplesdk
+package com.luckycart.samplesdk.ui
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import com.luckycart.model.BannerDetails
 import com.luckycart.model.Banners
 import com.luckycart.model.LCAuthorization
+import com.luckycart.samplesdk.AUTH_KEY
+import com.luckycart.samplesdk.CUSTOMER_ID
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
 
-class MainActivity : AppCompatActivity(), LuckyCartListenerCallback {
+class MainViewModel : ViewModel(), LuckyCartListenerCallback {
+    private lateinit var mContext: Context
     var luckyCartSDK: LuckCartSDK? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    fun initLuckyCart() {
         val auth = LCAuthorization(AUTH_KEY, "")
-        luckyCartSDK = LuckCartSDK(this)
+        luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.init(auth, CUSTOMER_ID)
         luckyCartSDK?.setUser(CUSTOMER_ID)
         luckyCartSDK?.setActionListener(this)
         luckyCartSDK?.listAvailableBanners()
-        luckyCartSDK?.getBannerDetails("categories","banner_100")
+        luckyCartSDK?.getBannerDetails("categories", "banner_100")
     }
 
     override fun listAvailableBanners(banners: Banners) {
@@ -33,5 +34,7 @@ class MainActivity : AppCompatActivity(), LuckyCartListenerCallback {
 
     }
 
-
+    fun getContext(context: Context) {
+        mContext = context
+    }
 }
