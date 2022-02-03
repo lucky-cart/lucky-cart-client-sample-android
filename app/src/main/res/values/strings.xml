@@ -3,6 +3,6 @@
     <string name="log_out">Log Out</string>
     <string name="welcome">Welcome</string>
     <string name="start_shopping">Start Shopping</string>
-    <string name="customer">LuckyCart customer \n<b>customer%1$S</b></string>
+    <string name="customer">LuckyCart customer \n %1$S</string>
 
 </resources>
