@@ -1,4 +1,4 @@
-package com.luckycart.samplesdk.ui
+package com.luckycart.samplesdk.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,9 +10,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
-import kotlinx.android.synthetic.main.fragment_banner.*
+import com.luckycart.samplesdk.ui.GetBannerState
+import com.luckycart.samplesdk.ui.MainActivity
+import com.luckycart.samplesdk.ui.MainViewModel
+import com.luckycart.samplesdk.ui.ShoppingFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 
-class BannerFragment : Fragment() {
+class HomeFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var listBannerDetails: ArrayList<BannerDetails>
 
@@ -21,7 +25,7 @@ class BannerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_banner, container, false)
+        val root = inflater.inflate(R.layout.fragment_home, container, false)
         return root
 
     }
@@ -29,21 +33,25 @@ class BannerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
-        mainViewModel.loadBannerCategory()
-        listBannerDetails = ArrayList()
-        mainViewModel.getBannerCategoryDetails.observe(viewLifecycleOwner, Observer { bannerState ->
+        mainViewModel.initLuckyCart()
+        mainViewModel.getBannerDetails.observe(viewLifecycleOwner, Observer { bannerState ->
+            listBannerDetails = ArrayList()
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
                     listBannerDetails.add(bannerState.response)
-                    recycleBanner.visibility = View.VISIBLE
-                    recycleBanner.layoutManager =
+                    recycle.visibility = View.VISIBLE
+                    recycle.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    recycleBanner.adapter = context?.let { AdapterHome(it, listBannerDetails) }
+                    recycle.adapter = context?.let { AdapterHome(it, listBannerDetails) }
                 }
-                is GetBannerState.OnError -> recycleBanner.visibility = View.GONE
+                is GetBannerState.OnError -> recycle.visibility = View.GONE
             }
 
         })
+
+        btnShopping.setOnClickListener {
+            (context as MainActivity).showFragment(ShoppingFragment())
+        }
     }
 
     private fun setUpViewModel() {

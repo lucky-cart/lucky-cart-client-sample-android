@@ -1,4 +1,4 @@
-package com.luckycart.samplesdk.ui
+package com.luckycart.samplesdk.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>
         return ViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: AdapterHome.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindViewBanner(listBanner[position])
     }
 

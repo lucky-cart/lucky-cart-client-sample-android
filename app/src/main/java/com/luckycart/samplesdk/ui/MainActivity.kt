@@ -1,17 +1,12 @@
 package com.luckycart.samplesdk.ui
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.utils.CUSTOMER_ID
 import com.luckycart.samplesdk.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.luckycart.samplesdk.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {

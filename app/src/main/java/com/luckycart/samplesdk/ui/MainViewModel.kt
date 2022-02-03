@@ -1,6 +1,7 @@
 package com.luckycart.samplesdk.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     var getBannerDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var getBannerCategoryDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var getBannerCategory = false
+    var listCategoryId =ArrayList<String>()
 
 
     fun initLuckyCart() {
@@ -39,6 +41,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun getBannerDetails(banners: BannerDetails) {
+        Log.d("getBannerDetails",""+banners)
         if (getBannerCategory)
             getBannerCategoryDetails.value = GetBannerState.OnSuccess(banners)
         else getBannerDetails.value = GetBannerState.OnSuccess(banners)
@@ -59,9 +62,9 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        Prefs(mContext).banners.categories.forEach { category ->
-            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, category)
-
+        for (i in 0 until Prefs(mContext).banners.categories.size) {
+            Log.d("categories",""+Prefs(mContext).banners.categories[i])
+            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, Prefs(mContext).banners.categories[i])
         }
     }
 
