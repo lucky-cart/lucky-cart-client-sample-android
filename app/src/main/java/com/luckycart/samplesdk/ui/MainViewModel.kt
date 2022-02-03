@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.luckycart.model.BannerDetails
 import com.luckycart.model.Banners
 import com.luckycart.model.LCAuthorization
-import com.luckycart.samplesdk.AUTH_KEY
-import com.luckycart.samplesdk.CUSTOMER_ID
+import com.luckycart.samplesdk.utils.AUTH_KEY
+import com.luckycart.samplesdk.utils.CUSTOMER_ID
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
 

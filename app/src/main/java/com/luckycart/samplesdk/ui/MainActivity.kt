@@ -3,7 +3,7 @@ package com.luckycart.samplesdk.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
-import com.luckycart.samplesdk.CUSTOMER_ID
+import com.luckycart.samplesdk.utils.CUSTOMER_ID
 import com.luckycart.samplesdk.R
 import kotlinx.android.synthetic.main.toolbar.*
 
