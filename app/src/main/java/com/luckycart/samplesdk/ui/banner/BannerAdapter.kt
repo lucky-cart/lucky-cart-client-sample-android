@@ -10,7 +10,7 @@ import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import kotlinx.android.synthetic.main.item_banner.view.*
 
-class BannerAdapter (var context: Context, var listBanner: ArrayList<BannerDetails>) :
+class BannerAdapter(var context: Context, var listBanner: ArrayList<BannerDetails>) :
     RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View = LayoutInflater.from(parent.context)

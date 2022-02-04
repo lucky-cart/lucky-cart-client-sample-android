@@ -1,5 +1,6 @@
 package com.luckycart.samplesdk.ui
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,9 @@ import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_ID
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlin.system.exitProcess
 
+import android.webkit.WebView
+
+
 class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
 
@@ -21,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         txtCustomer.text = getString(R.string.customer, CUSTOMER_ID)
         setUpViewModel()
-        showFragment(HomeFragment(),null,null)
+        showFragment(HomeFragment(), null, null)
 
 
     }
@@ -32,10 +36,10 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getContext(this)
     }
 
-    fun showFragment(fragment: Fragment, shopID:String?,shopType:String?) {
+    fun showFragment(fragment: Fragment, shopID: String?, shopType: String?) {
         val args = Bundle()
         args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
-        args.putString(INTENT_FRAGMENT_SHOP,shopType)
+        args.putString(INTENT_FRAGMENT_SHOP, shopType)
         fragment.arguments = args
         supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
             .addToBackStack(fragment.javaClass.name)
@@ -44,8 +48,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-       supportFragmentManager.findFragmentById(R.id.fragment) ?: exitProcess(0)
+        supportFragmentManager.findFragmentById(R.id.fragment) ?: exitProcess(0)
     }
-
-
 }
