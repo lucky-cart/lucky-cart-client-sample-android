@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
+import com.luckycart.samplesdk.ui.MainActivity
+import com.luckycart.samplesdk.ui.banner.BannerFragment
 import kotlinx.android.synthetic.main.item_home.view.*
 
 class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>) :
@@ -28,10 +30,12 @@ class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindViewBanner(item: BannerDetails) {
-
             Glide.with(context)
                 .load(item.image_url)
                 .into(itemView.imgBanner)
+            itemView.imgBanner.setOnClickListener {
+                (context as MainActivity).showFragment(BannerFragment(),item.action.ref,"homepage")
+            }
 
         }
     }

@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
         })
 
         btnShopping.setOnClickListener {
-            (context as MainActivity).showFragment(ShoppingFragment())
+            (context as MainActivity).showFragment(ShoppingFragment(),null,null)
         }
     }
 

@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.luckycart.samplesdk.utils.CUSTOMER_ID
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.home.HomeFragment
+import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
+import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_ID
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         txtCustomer.text = getString(R.string.customer, CUSTOMER_ID)
         setUpViewModel()
-        showFragment(HomeFragment())
+        showFragment(HomeFragment(),null,null)
 
 
     }
@@ -29,14 +31,14 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getContext(this)
     }
 
-    fun showFragment(fragment: Fragment) {
-        if (fragment == HomeFragment())
-            supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment)
-                .commit()
-        else
-            supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment)
-                .addToBackStack(fragment.javaClass.name)
-                .commit()
+    fun showFragment(fragment: Fragment, shopID:String?,shopType:String?) {
+        val args = Bundle()
+        args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
+        args.putString(INTENT_FRAGMENT_SHOP,shopType)
+        fragment.arguments = args
+        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment)
+            .addToBackStack(fragment.javaClass.name)
+            .commit()
     }
 
 

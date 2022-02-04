@@ -4,18 +4,33 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/size_medium_txt"
+        android:textColor="@color/black"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginTop="@dimen/bigger_margin"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleBanner"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/small_margin"
-        android:layout_marginTop="@dimen/bigger_margin"
+        android:layout_marginTop="@dimen/medium_margin"
         android:layout_marginBottom="@dimen/medium_margin"
         android:layout_marginEnd="@dimen/small_margin"
         app:layout_constraintBottom_toTopOf="@+id/btnCheckOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <TextView
         android:id="@+id/txtPrice"
@@ -43,4 +58,21 @@
         android:layout_marginEnd="@dimen/small_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnShop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:padding="@dimen/small_margin"
+        android:visibility="gone"
+        android:background="@color/green"
+        android:text="@string/keep_shopping"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_medium_txt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

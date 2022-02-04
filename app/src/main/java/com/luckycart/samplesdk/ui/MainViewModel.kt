@@ -23,13 +23,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     var getBannerDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var getBannerCategoryDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var getBannerCategory = false
-    var listCategoryId =ArrayList<String>()
+    var shopID = ""
 
 
     fun initLuckyCart() {
         val auth = LCAuthorization(AUTH_KEY, "")
         luckyCartSDK = LuckCartSDK(mContext)
-        luckyCartSDK?.init(auth, CUSTOMER_ID)
+        luckyCartSDK?.init(auth, null)
         luckyCartSDK?.setUser(CUSTOMER_ID)
         luckyCartSDK?.setActionListener(this)
         luckyCartSDK?.listAvailableBanners()
@@ -41,12 +41,11 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun getBannerDetails(banners: BannerDetails) {
-        Log.d("getBannerDetails",""+banners)
-        if (getBannerCategory)
+        Log.d("getBannerDetails", "" + banners)
+        if (getBannerCategory) {
+            if (banners.action.ref == shopID)
             getBannerCategoryDetails.value = GetBannerState.OnSuccess(banners)
-        else getBannerDetails.value = GetBannerState.OnSuccess(banners)
-
-
+        }else getBannerDetails.value = GetBannerState.OnSuccess(banners)
     }
 
     private fun loadBannerHomePage() {
@@ -57,14 +56,26 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         }
     }
 
-    fun loadBannerCategory() {
+    fun loadBannerCategory(pageId: String) {
+        shopID = pageId
         getBannerCategory = true
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         for (i in 0 until Prefs(mContext).banners.categories.size) {
-            Log.d("categories",""+Prefs(mContext).banners.categories[i])
             luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, Prefs(mContext).banners.categories[i])
+        }
+    }
+
+    fun loadShopBanner(pageId: String){
+        shopID = pageId
+        getBannerCategory = true
+        if (luckyCartSDK == null)
+            luckyCartSDK = LuckCartSDK(mContext)
+        luckyCartSDK?.setActionListener(this)
+        Prefs(mContext).banners.categories.forEach{
+            if (it.contains("banner"))
+            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
         }
     }
 

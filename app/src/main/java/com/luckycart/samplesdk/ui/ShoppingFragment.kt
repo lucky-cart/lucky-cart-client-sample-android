@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.banner.BannerFragment
+import com.luckycart.samplesdk.utils.SHOP_COFFE_ID
 import kotlinx.android.synthetic.main.fragment_shopping.*
 
 class ShoppingFragment : Fragment() {
@@ -23,10 +24,10 @@ class ShoppingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         imgCoffee.setOnClickListener {
-            (context as MainActivity).showFragment(BannerFragment())
+            (context as MainActivity).showFragment(BannerFragment(), SHOP_COFFE_ID,null)
         }
         imgFruit.setOnClickListener {
-            (context as MainActivity).showFragment(BannerFragment())
+            (context as MainActivity).showFragment(BannerFragment(),null,null)
         }
     }
 }

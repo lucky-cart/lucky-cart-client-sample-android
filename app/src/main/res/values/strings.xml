@@ -7,6 +7,9 @@
     <string name="add_cart">Add To Cart</string>
     <string name="product">Products</string>
     <string name="check_out">Check Out</string>
+    <string name="coffee">Coffees</string>
+    <string name="coffee_promotion">Promotion\nCoffee Brothers</string>
+    <string name="keep_shopping">Continue Shopping</string>
 
 
 </resources>

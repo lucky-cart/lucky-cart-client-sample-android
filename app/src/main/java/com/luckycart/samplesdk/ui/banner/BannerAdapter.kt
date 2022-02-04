@@ -28,22 +28,10 @@ class BannerAdapter (var context: Context, var listBanner: ArrayList<BannerDetai
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindViewBanner(item: BannerDetails) {
-            if (item.id.contains("banner")){
-                itemView.txtName.visibility = View.GONE
-                itemView.btnAddCart.visibility = View.GONE
-                Glide.with(context)
-                    .load(item.image_url)
-                    .into(itemView.imgBanner)
-            }else{
-                itemView.txtName.visibility = View.VISIBLE
-                itemView.btnAddCart.visibility = View.VISIBLE
-                itemView.txtName.text = item.name
-                Glide.with(context)
-                    .load(item.image_url)
-                    .into(itemView.imgSearch)
-            }
-
-
+            itemView.txtName.text = item.name
+            Glide.with(context)
+                .load(item.image_url)
+                .into(itemView.imgSearch)
         }
     }
 }
