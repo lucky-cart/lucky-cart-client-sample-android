@@ -10,6 +10,7 @@ import com.luckycart.samplesdk.ui.home.HomeFragment
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_ID
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
@@ -36,9 +37,14 @@ class MainActivity : AppCompatActivity() {
         args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
         args.putString(INTENT_FRAGMENT_SHOP,shopType)
         fragment.arguments = args
-        supportFragmentManager.beginTransaction().replace(R.id.fragment, fragment)
+        supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
             .addToBackStack(fragment.javaClass.name)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+       supportFragmentManager.findFragmentById(R.id.fragment) ?: exitProcess(0)
     }
 
 
