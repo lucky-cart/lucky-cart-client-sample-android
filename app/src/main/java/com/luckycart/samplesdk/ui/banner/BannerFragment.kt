@@ -8,21 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
+import com.luckycart.samplesdk.model.*
 import com.luckycart.samplesdk.ui.GetBannerState
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.ui.ShoppingFragment
-import com.luckycart.samplesdk.ui.home.AdapterHome
 import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.fragment_banner.*
 
 class BannerFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var listBannerDetails: ArrayList<BannerDetails>
     private var pageType = ""
     private var shopId = ""
+    private var listProduct = ArrayList<Product>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,21 +40,31 @@ class BannerFragment : Fragment() {
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP).toString()
         initView()
         initClickListener()
+        listProduct.addAll(mainViewModel.updateListProduct(shopId))
         if (pageType == "homepage")
             mainViewModel.loadShopBanner(shopId)
         else mainViewModel.loadBannerCategory(shopId)
-
-        listBannerDetails = ArrayList()
         mainViewModel.getBannerCategoryDetails.observe(viewLifecycleOwner, Observer { bannerState ->
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
-                    listBannerDetails.add(bannerState.response)
-                    recycleBanner.visibility = View.VISIBLE
+                    listProduct.add(
+                        Product(
+                            "banner",
+                            "banner",
+                            bannerState.response.image_url,
+                            null,
+                            0F
+                        )
+                    )
                     recycleBanner.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    recycleBanner.adapter = context?.let { BannerAdapter(it, listBannerDetails) }
+                    recycleBanner.adapter = context?.let { BannerAdapter(it, listProduct) }
                 }
-                is GetBannerState.OnError -> recycleBanner.visibility = View.GONE
+                is GetBannerState.OnError -> {
+                    recycleBanner.layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    recycleBanner.adapter = context?.let { BannerAdapter(it, listProduct) }
+                }
             }
 
         })
@@ -68,18 +77,16 @@ class BannerFragment : Fragment() {
     }
 
     private fun initView() {
-        if (pageType.contains("homepage") && shopId == SHOP_HOME_PAGE_ID) {
-            title.text = getString(R.string.coffee_promotion)
-            txtPrice.visibility = View.GONE
-            btnCheckOut.visibility = View.GONE
-            btnShop.visibility = View.VISIBLE
-        } else if (shopId == CATEGORY_COFFE_ID) {
-            title.text = getString(R.string.coffee)
-            txtPrice.visibility = View.VISIBLE
-            btnCheckOut.visibility = View.VISIBLE
-            btnShop.visibility = View.GONE
-        }else title.text = getString(R.string.fruit)
-
+        when (shopId) {
+            CATEGORY_COFFE_ID -> title.text = Coffees().name
+            CATEGORY_FRUITS_ID -> title.text = Fruit().name
+            SHOP_HOME_PAGE_ID -> {
+                title.text = CoffeeBrothers().brand.name
+                btnCheckOut.visibility = View.GONE
+                btnShop.visibility = View.VISIBLE
+                txtPrice.visibility = View.GONE
+            }
+        }
     }
 
     private fun initClickListener() {

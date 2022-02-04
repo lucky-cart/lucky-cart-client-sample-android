@@ -9,10 +9,8 @@ import com.luckycart.local.Prefs
 import com.luckycart.model.BannerDetails
 import com.luckycart.model.Banners
 import com.luckycart.model.LCAuthorization
-import com.luckycart.samplesdk.utils.AUTH_KEY
-import com.luckycart.samplesdk.utils.BANNER_CATEGORIES
-import com.luckycart.samplesdk.utils.BANNER_HOMEPAGE
-import com.luckycart.samplesdk.utils.CUSTOMER_ID
+import com.luckycart.samplesdk.model.*
+import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
 
@@ -42,9 +40,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     override fun getBannerDetails(banners: BannerDetails) {
         Log.d("getBannerDetails", "" + banners)
-        if (getBannerCategory) {
-            getBannerCategoryDetails.value = GetBannerState.OnSuccess(banners)
-        }else getBannerDetails.value = GetBannerState.OnSuccess(banners)
+        if (banners.name != null) {
+            if (getBannerCategory) {
+                getBannerCategoryDetails.value = GetBannerState.OnSuccess(banners)
+            } else getBannerDetails.value = GetBannerState.OnSuccess(banners)
+        } else {
+            getBannerCategoryDetails.value = GetBannerState.OnError("error")
+        }
     }
 
     private fun loadBannerHomePage() {
@@ -63,25 +65,54 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         luckyCartSDK?.setActionListener(this)
         Prefs(mContext).banners.categories.forEach {
             if (it.contains(shopID))
-            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
+                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
 
         }
 
     }
 
-    fun loadShopBanner(pageId: String){
+    fun loadShopBanner(pageId: String) {
         shopID = pageId
         getBannerCategory = true
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        Prefs(mContext).banners.categories.forEach{
-            if (it.contains("banner"))
-            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
-        }
+        luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, "banner_$shopID")
+
     }
 
     fun getContext(context: Context) {
         mContext = context
+    }
+
+    fun updateListProduct(shopId: String): ArrayList<Product> {
+        val listProduct = ArrayList<Product>()
+        when (shopId) {
+            CATEGORY_COFFE_ID -> {
+                val productCoffee = Coffees()
+                listProduct.add(productCoffee.firstProduct)
+                listProduct.add(productCoffee.secondProduct)
+                listProduct.add(productCoffee.thirdProduct)
+                listProduct.add(productCoffee.firthProduct)
+            }
+            CATEGORY_FRUITS_ID -> {
+                val productFruit = Fruit()
+                listProduct.add(productFruit.firstProduct)
+                listProduct.add(productFruit.secondProduct)
+                listProduct.add(productFruit.thirdProduct)
+                listProduct.add(productFruit.firthProduct)
+            }
+            SHOP_HOME_PAGE_ID -> {
+                if (Coffees().firstProduct.brand == CoffeeBrothers().brand)
+                    listProduct.add(Coffees().firstProduct)
+                if (Coffees().secondProduct.brand == CoffeeBrothers().brand)
+                    listProduct.add(Coffees().secondProduct)
+                if (Coffees().thirdProduct.brand == CoffeeBrothers().brand)
+                    listProduct.add(Coffees().thirdProduct)
+                if (Coffees().firthProduct.brand == CoffeeBrothers().brand)
+                    listProduct.add(Coffees().firthProduct)
+            }
+        }
+        return listProduct
     }
 }

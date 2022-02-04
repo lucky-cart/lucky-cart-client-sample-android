@@ -13,8 +13,6 @@ import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_ID
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlin.system.exitProcess
 
-import android.webkit.WebView
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
