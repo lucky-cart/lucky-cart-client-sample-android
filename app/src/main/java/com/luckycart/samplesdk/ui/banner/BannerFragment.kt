@@ -15,9 +15,7 @@ import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.ui.ShoppingFragment
 import com.luckycart.samplesdk.ui.home.AdapterHome
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_ID
-import com.luckycart.samplesdk.utils.SHOP_COFFE_ID
+import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.fragment_banner.*
 
 class BannerFragment : Fragment() {
@@ -70,17 +68,18 @@ class BannerFragment : Fragment() {
     }
 
     private fun initView() {
-        if (pageType.contains("homepage") && shopId == SHOP_COFFE_ID) {
+        if (pageType.contains("homepage") && shopId == SHOP_HOME_PAGE_ID) {
             title.text = getString(R.string.coffee_promotion)
             txtPrice.visibility = View.GONE
             btnCheckOut.visibility = View.GONE
             btnShop.visibility = View.VISIBLE
-        } else if (shopId == SHOP_COFFE_ID) {
+        } else if (shopId == CATEGORY_COFFE_ID) {
             title.text = getString(R.string.coffee)
             txtPrice.visibility = View.VISIBLE
             btnCheckOut.visibility = View.VISIBLE
             btnShop.visibility = View.GONE
-        }
+        }else title.text = getString(R.string.fruit)
+
     }
 
     private fun initClickListener() {
