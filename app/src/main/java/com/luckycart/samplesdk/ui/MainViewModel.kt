@@ -77,7 +77,10 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, "banner_$shopID")
+        Prefs(mContext).banners.homepage.forEach {
+            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it+"_$shopID")
+        }
+       
 
     }
 
