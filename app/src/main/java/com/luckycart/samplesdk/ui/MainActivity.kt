@@ -44,11 +44,11 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(fragment.javaClass.name)
             .commit()
     }
-    fun showFragmentGame(gameImg:String,gameUrl:String) {
+    fun showFragmentGame(gameImg: ArrayList<String>?, gameUrl: ArrayList<String>?) {
         val fragment = GameFragment()
         val args = Bundle()
-        args.putString(INTENT_FRAGMENT_GAME_IMG, gameImg)
-        args.putString(INTENT_FRAGMENT_GAME_URL, gameUrl)
+        args.putStringArrayList(INTENT_FRAGMENT_GAME_IMG, gameImg)
+        args.putStringArrayList(INTENT_FRAGMENT_GAME_URL, gameUrl)
         fragment.arguments = args
         supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
             .addToBackStack(fragment.javaClass.name)

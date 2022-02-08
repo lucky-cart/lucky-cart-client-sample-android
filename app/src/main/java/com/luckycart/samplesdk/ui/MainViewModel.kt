@@ -1,17 +1,12 @@
 package com.luckycart.samplesdk.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.luckycart.local.Prefs
-import com.luckycart.model.BannerDetails
-import com.luckycart.model.Banners
-import com.luckycart.model.LCAuthorization
-import com.luckycart.model.TransactionResponse
+import com.luckycart.model.*
 import com.luckycart.samplesdk.model.*
-import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
@@ -32,6 +27,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         luckyCartSDK?.setUser(CUSTOMER_ID)
         luckyCartSDK?.setActionListener(this)
         luckyCartSDK?.listAvailableBanners()
+
     }
 
     override fun listAvailableBanners(banners: Banners) {
@@ -50,12 +46,20 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun sendCard(transactionResponse: TransactionResponse) {
-        transactionResponse.introMobile?.let { img-> transactionResponse.mobileUrl?.let {
-            (mContext as MainActivity).showFragmentGame(img,
-                it
-            )
-        } }
+        luckyCartSDK?.getGame(CARD_ID)
+    }
 
+    override fun getGame(game: GameResponse) {
+        val listGame = ArrayList<String>()
+        val listUrlGame = ArrayList<String>()
+        game.games?.forEach { game ->
+            game.mobileGameImage?.let { listGame.add(it) }
+            game.mobileGameUrl?.let { listUrlGame.add(it) }
+        }
+        (mContext as MainActivity).showFragmentGame(
+            listGame,
+            listUrlGame
+        )
     }
 
     private fun loadBannerHomePage() {
@@ -140,10 +144,11 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         listProduct.add(Fruits().fourthProduct)
         return listProduct
     }
-    fun sendCard(ttc:Float){
+
+    fun sendCard(ttc: Float) {
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        luckyCartSDK?.sendCard(CARD_ID,ttc)
+        luckyCartSDK?.sendCard(CARD_ID, ttc)
     }
 }
