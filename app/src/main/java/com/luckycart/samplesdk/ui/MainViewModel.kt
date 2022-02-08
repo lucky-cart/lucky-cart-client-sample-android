@@ -104,29 +104,12 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun updateProductOfShopId(shopId: String): ArrayList<Product> {
         val listProduct = ArrayList<Product>()
         when (shopId) {
-            CATEGORY_COFFE_ID -> {
-                val productCoffee = Coffees()
-                listProduct.add(productCoffee.firstProduct)
-                listProduct.add(productCoffee.secondProduct)
-                listProduct.add(productCoffee.thirdProduct)
-                listProduct.add(productCoffee.fourthProduct)
-            }
-            CATEGORY_FRUITS_ID -> {
-                val productFruit = Fruits()
-                listProduct.add(productFruit.firstProduct)
-                listProduct.add(productFruit.secondProduct)
-                listProduct.add(productFruit.thirdProduct)
-                listProduct.add(productFruit.fourthProduct)
-            }
+            CATEGORY_COFFE_ID -> listProduct.addAll(FakeData.coffees.products)
+            CATEGORY_FRUITS_ID -> listProduct.addAll(FakeData.fruits.products)
             SHOP_HOME_PAGE_ID -> {
-                if (Coffees().firstProduct.brand == FakeData.coffeeBrothers)
-                    listProduct.add(Coffees().firstProduct)
-                if (Coffees().secondProduct.brand == FakeData.coffeeBrothers)
-                    listProduct.add(Coffees().secondProduct)
-                if (Coffees().thirdProduct.brand == FakeData.coffeeBrothers)
-                    listProduct.add(Coffees().thirdProduct)
-                if (Coffees().fourthProduct.brand == FakeData.coffeeBrothers)
-                    listProduct.add(Coffees().fourthProduct)
+                for (product in FakeData.coffees.products) {
+                    if (product.brand == FakeData.coffeeBrothers) listProduct.add(product)
+                }
             }
         }
         return listProduct
@@ -134,14 +117,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     fun updateAllProduct(): ArrayList<Product> {
         val listProduct = ArrayList<Product>()
-        listProduct.add(Coffees().firstProduct)
-        listProduct.add(Coffees().secondProduct)
-        listProduct.add(Coffees().thirdProduct)
-        listProduct.add(Coffees().fourthProduct)
-        listProduct.add(Fruits().firstProduct)
-        listProduct.add(Fruits().secondProduct)
-        listProduct.add(Fruits().thirdProduct)
-        listProduct.add(Fruits().fourthProduct)
+        listProduct.addAll(FakeData.coffees.products)
+        listProduct.addAll(FakeData.fruits.products)
         return listProduct
     }
 

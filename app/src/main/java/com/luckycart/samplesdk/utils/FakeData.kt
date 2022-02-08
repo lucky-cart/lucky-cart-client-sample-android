@@ -1,6 +1,7 @@
 package com.luckycart.samplesdk.utils
 
 import com.luckycart.samplesdk.model.Brand
+import com.luckycart.samplesdk.model.Category
 import com.luckycart.samplesdk.model.Product
 
 class FakeData {
@@ -32,9 +33,11 @@ class FakeData {
         val thirdFruitsProduct: Product = Product(
             "Red Apple", "apple.red", "applered", FakeData.bringYaFruit, 4.95F
         )
-        var fourthFruitsProduct: Product = Product(
+        val fourthFruitsProduct: Product = Product(
             "Green Apple", "apple.green", "applegreen", FakeData.bringYaFruit, 4.45F
         )
+        val coffees: Category = Category("Coffees","coffees", "coffees", listOf(firstCoffeeProduct, secondCoffeeProduct, thirdCoffeeProduct, fourthCoffeeProduct))
+        val fruits: Category = Category("Fruits","fruits", "fruits", listOf(firstFruitsProduct, secondFruitsProduct, thirdFruitsProduct, fourthFruitsProduct))
     }
 
 }
