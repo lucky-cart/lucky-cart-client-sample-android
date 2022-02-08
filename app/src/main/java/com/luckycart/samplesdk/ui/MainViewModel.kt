@@ -119,13 +119,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
                 listProduct.add(productFruit.fourthProduct)
             }
             SHOP_HOME_PAGE_ID -> {
-                if (Coffees().firstProduct.brand == CoffeeBrothers().brand)
+                if (Coffees().firstProduct.brand == FakeData.coffeeBrothers)
                     listProduct.add(Coffees().firstProduct)
-                if (Coffees().secondProduct.brand == CoffeeBrothers().brand)
+                if (Coffees().secondProduct.brand == FakeData.coffeeBrothers)
                     listProduct.add(Coffees().secondProduct)
-                if (Coffees().thirdProduct.brand == CoffeeBrothers().brand)
+                if (Coffees().thirdProduct.brand == FakeData.coffeeBrothers)
                     listProduct.add(Coffees().thirdProduct)
-                if (Coffees().fourthProduct.brand == CoffeeBrothers().brand)
+                if (Coffees().fourthProduct.brand == FakeData.coffeeBrothers)
                     listProduct.add(Coffees().fourthProduct)
             }
         }

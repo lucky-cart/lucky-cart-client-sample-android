@@ -104,7 +104,7 @@ class ProductsAndBannerFragment : Fragment() {
             CATEGORY_COFFE_ID -> title.text = Coffees().name
             CATEGORY_FRUITS_ID -> title.text = Fruits().name
             SHOP_HOME_PAGE_ID -> {
-                title.text = getString(R.string.coffee_promotion, CoffeeBrothers().brand.name)
+                title.text = getString(R.string.coffee_promotion, FakeData.coffeeBrothers.name)
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
                 btnCheckOut.visibility = View.GONE
                 btnShop.visibility = View.VISIBLE
