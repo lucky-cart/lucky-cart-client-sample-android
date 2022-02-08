@@ -6,6 +6,7 @@
     <dimen name="medium_margin">15dp</dimen>
     <dimen name="bigger_margin">70dp</dimen>
     <dimen name="size_medium_txt">16sp</dimen>
+    <dimen name="height_button">40dp</dimen>
 
 
 </resources>

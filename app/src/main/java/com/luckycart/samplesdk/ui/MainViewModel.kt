@@ -1,7 +1,6 @@
 package com.luckycart.samplesdk.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import com.luckycart.local.Prefs
 import com.luckycart.model.BannerDetails
 import com.luckycart.model.Banners
 import com.luckycart.model.LCAuthorization
+import com.luckycart.model.TransactionResponse
 import com.luckycart.samplesdk.model.*
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
@@ -20,9 +20,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     private lateinit var availableBanners: Banners
     var getBannerDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var getBannerCategoryDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
-    var getBannerCategory = false
-    var shopID = ""
-
+    private var getBannerCategory: Boolean = false
+    private var shopID: String = ""
 
     fun initLuckyCart() {
         val auth = LCAuthorization(AUTH_KEY, "")
@@ -39,7 +38,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun getBannerDetails(banners: BannerDetails) {
-        Log.d("getBannerDetails", "" + banners)
         if (banners.name != null) {
             if (getBannerCategory) {
                 getBannerCategoryDetails.value = GetBannerState.OnSuccess(banners)
@@ -49,9 +47,12 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         }
     }
 
+    override fun sendCard(transactionResponse: TransactionResponse) {
+    }
+
     private fun loadBannerHomePage() {
         getBannerCategory = false
-        availableBanners.homepage.forEach { homePage ->
+        availableBanners.homepage?.forEach { homePage ->
             luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, homePage)
 
         }
@@ -63,7 +64,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        Prefs(mContext).banners.categories.forEach {
+        Prefs(mContext).banners.categories?.forEach {
             if (it.contains(shopID))
                 luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
 
@@ -77,10 +78,10 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         if (luckyCartSDK == null)
             luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        Prefs(mContext).banners.homepage.forEach {
-            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it+"_$shopID")
+        Prefs(mContext).banners.homepage?.forEach {
+            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it + "_$shopID")
         }
-       
+
 
     }
 
@@ -96,14 +97,14 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
                 listProduct.add(productCoffee.firstProduct)
                 listProduct.add(productCoffee.secondProduct)
                 listProduct.add(productCoffee.thirdProduct)
-                listProduct.add(productCoffee.firthProduct)
+                listProduct.add(productCoffee.fourthProduct)
             }
             CATEGORY_FRUITS_ID -> {
-                val productFruit = Fruit()
+                val productFruit = Fruits()
                 listProduct.add(productFruit.firstProduct)
                 listProduct.add(productFruit.secondProduct)
                 listProduct.add(productFruit.thirdProduct)
-                listProduct.add(productFruit.firthProduct)
+                listProduct.add(productFruit.fourthProduct)
             }
             SHOP_HOME_PAGE_ID -> {
                 if (Coffees().firstProduct.brand == CoffeeBrothers().brand)
@@ -112,8 +113,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
                     listProduct.add(Coffees().secondProduct)
                 if (Coffees().thirdProduct.brand == CoffeeBrothers().brand)
                     listProduct.add(Coffees().thirdProduct)
-                if (Coffees().firthProduct.brand == CoffeeBrothers().brand)
-                    listProduct.add(Coffees().firthProduct)
+                if (Coffees().fourthProduct.brand == CoffeeBrothers().brand)
+                    listProduct.add(Coffees().fourthProduct)
             }
         }
         return listProduct

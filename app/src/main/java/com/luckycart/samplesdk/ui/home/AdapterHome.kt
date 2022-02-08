@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
-import com.luckycart.samplesdk.ui.banner.BannerFragment
+import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import kotlinx.android.synthetic.main.item_home.view.*
 import com.luckycart.samplesdk.ui.WebViewFragment
 
@@ -36,15 +36,15 @@ class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>
                 .load(item.image_url)
                 .into(itemView.imgBanner)
             itemView.imgBanner.setOnClickListener {
-                if (item.action.type.isNullOrEmpty()) {
+                if (item.action?.type.isNullOrEmpty()) {
                     (context as MainActivity).showFragment(
                         WebViewFragment(),
                         null,
                         item.redirect_url
                     )
                 } else (context as MainActivity).showFragment(
-                    BannerFragment(),
-                    item.action.ref,
+                    ProductsAndBannerFragment(),
+                    item.action?.ref,
                     "homepage"
                 )
             }

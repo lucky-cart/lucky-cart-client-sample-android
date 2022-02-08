@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Coffees
-import com.luckycart.samplesdk.model.Fruit
+import com.luckycart.samplesdk.model.Fruits
 import com.luckycart.samplesdk.model.Product
 import kotlinx.android.synthetic.main.item_banner.view.*
 
-class BannerAdapter(var context: Context, var listProduct: ArrayList<Product>) :
-    RecyclerView.Adapter<BannerAdapter.ViewHolder>() {
+class ProductsAndBannerAdapter(var context: Context, var listProduct: ArrayList<Product>) :
+    RecyclerView.Adapter<ProductsAndBannerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_banner, parent, false)
@@ -51,19 +51,19 @@ class BannerAdapter(var context: Context, var listProduct: ArrayList<Product>) :
                     Coffees().thirdProduct.imageName -> itemView.imgSearch.setImageDrawable(
                         ContextCompat.getDrawable(context, R.drawable.coffee2)
                     )
-                    Coffees().firthProduct.imageName -> itemView.imgSearch.setImageDrawable(
+                    Coffees().fourthProduct.imageName -> itemView.imgSearch.setImageDrawable(
                         ContextCompat.getDrawable(context, R.drawable.coffee2)
                     )
-                    Fruit().firstProduct.imageName -> itemView.imgSearch.setImageDrawable(
+                    Fruits().firstProduct.imageName -> itemView.imgSearch.setImageDrawable(
                         ContextCompat.getDrawable(context, R.drawable.bananas)
                     )
-                    Fruit().secondProduct.imageName -> itemView.imgSearch.setImageDrawable(
+                    Fruits().secondProduct.imageName -> itemView.imgSearch.setImageDrawable(
                         ContextCompat.getDrawable(context, R.drawable.coconut)
                     )
-                    Fruit().thirdProduct.imageName -> itemView.imgSearch.setImageDrawable(
+                    Fruits().thirdProduct.imageName -> itemView.imgSearch.setImageDrawable(
                         ContextCompat.getDrawable(context, R.drawable.applered)
                     )
-                    Fruit().firthProduct.imageName -> itemView.imgSearch.setImageDrawable(
+                    Fruits().fourthProduct.imageName -> itemView.imgSearch.setImageDrawable(
                         ContextCompat.getDrawable(context, R.drawable.applegreen)
                     )
                 }

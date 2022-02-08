@@ -39,7 +39,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnShopping"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height_button"
         android:layout_marginBottom="@dimen/medium_margin"
         android:background="@drawable/background_button"
         android:padding="@dimen/medium_padding"

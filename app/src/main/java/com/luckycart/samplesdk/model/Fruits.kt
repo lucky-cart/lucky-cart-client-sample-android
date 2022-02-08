@@ -1,6 +1,6 @@
 package com.luckycart.samplesdk.model
 
-class Fruit(
+data class Fruits(
     var name: String = "Fruits",
     var identifier: String = "fruits",
     var imageName: String = "fruits",
@@ -11,7 +11,13 @@ class Fruit(
         LocoBananas().brand,
         1.70F
     ),
-    var secondProduct: Product = Product("Coconut", "coconut", "coconut", LocoBananas().brand, 2.85F),
+    var secondProduct: Product = Product(
+        "Coconut",
+        "coconut",
+        "coconut",
+        LocoBananas().brand,
+        2.85F
+    ),
     var thirdProduct: Product = Product(
         "Red Apple",
         "apple.red",
@@ -19,7 +25,7 @@ class Fruit(
         BringYaFruit().brand,
         4.95F
     ),
-    var firthProduct: Product = Product(
+    var fourthProduct: Product = Product(
         "Green Apple",
         "apple.green",
         "applegreen",

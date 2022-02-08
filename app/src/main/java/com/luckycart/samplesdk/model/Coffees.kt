@@ -25,7 +25,7 @@ data class Coffees(
         QueensBeverages().brand,
         4.95F
     ),
-    var firthProduct: Product = Product(
+    var fourthProduct: Product = Product(
         "Costa Rica",
         "costa_rica",
         "coffee2",

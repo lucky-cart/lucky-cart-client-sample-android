@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luckycart.model.BannerDetails
@@ -34,7 +33,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
         mainViewModel.initLuckyCart()
-        mainViewModel.getBannerDetails.observe(viewLifecycleOwner, Observer { bannerState ->
+        mainViewModel.getBannerDetails.observe(viewLifecycleOwner, { bannerState ->
             listBannerDetails = ArrayList()
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
@@ -50,7 +49,7 @@ class HomeFragment : Fragment() {
         })
 
         btnShopping.setOnClickListener {
-            (context as MainActivity).showFragment(ShoppingFragment(),null,null)
+            (context as MainActivity).showFragment(ShoppingFragment(), null, null)
         }
     }
 

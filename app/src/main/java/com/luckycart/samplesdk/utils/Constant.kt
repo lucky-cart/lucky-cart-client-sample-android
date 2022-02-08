@@ -9,5 +9,7 @@ const val CATEGORY_COFFE_ID = "100"
 const val CATEGORY_FRUITS_ID = "200"
 const val INTENT_FRAGMENT_SHOP_ID = "shopId"
 const val INTENT_FRAGMENT_SHOP = "shop"
+const val CARD_ID = "cart1236"
+
 
 
