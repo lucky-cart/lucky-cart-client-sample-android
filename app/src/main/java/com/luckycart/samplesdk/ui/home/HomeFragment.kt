@@ -24,8 +24,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        return root
+        return inflater.inflate(R.layout.fragment_home, container, false)
 
     }
 

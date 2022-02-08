@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
 import kotlinx.android.synthetic.main.fragment_webview.*
-import android.webkit.WebSettings
 import android.webkit.WebViewClient
 
 
@@ -26,8 +25,6 @@ class WebViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val url = arguments?.getString(INTENT_FRAGMENT_SHOP).toString()
         webView.loadUrl(url)
-        val webSettings: WebSettings = webView.settings
-        webSettings.javaScriptEnabled = true
         webView.isVerticalScrollBarEnabled = true
         webView.isHorizontalScrollBarEnabled = true
         webView.webViewClient = WebViewClient()

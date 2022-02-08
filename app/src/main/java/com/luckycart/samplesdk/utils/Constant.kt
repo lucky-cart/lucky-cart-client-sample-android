@@ -12,5 +12,7 @@ const val INTENT_FRAGMENT_SHOP = "shop"
 const val CARD_ID = "cart1236"
 const val INTENT_FRAGMENT_CARD = "checkout"
 const val INTENT_FRAGMENT_CARD_TTC = "price"
+const val INTENT_FRAGMENT_GAME_IMG = "gameImg"
+const val INTENT_FRAGMENT_GAME_URL = "gameUrl"
 
 

@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.luckycart.samplesdk.R
-import com.luckycart.samplesdk.ui.card.CardFragment
+import com.luckycart.samplesdk.ui.game.GameFragment
 import com.luckycart.samplesdk.ui.home.HomeFragment
 import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -39,6 +39,16 @@ class MainActivity : AppCompatActivity() {
         ttc?.let { args.putFloat(INTENT_FRAGMENT_CARD_TTC, it) }
         args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
         args.putString(INTENT_FRAGMENT_SHOP, shopType)
+        fragment.arguments = args
+        supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
+            .addToBackStack(fragment.javaClass.name)
+            .commit()
+    }
+    fun showFragmentGame(gameImg:String,gameUrl:String) {
+        val fragment = GameFragment()
+        val args = Bundle()
+        args.putString(INTENT_FRAGMENT_GAME_IMG, gameImg)
+        args.putString(INTENT_FRAGMENT_GAME_URL, gameUrl)
         fragment.arguments = args
         supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
             .addToBackStack(fragment.javaClass.name)

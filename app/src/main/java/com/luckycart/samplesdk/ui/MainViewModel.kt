@@ -11,6 +11,7 @@ import com.luckycart.model.Banners
 import com.luckycart.model.LCAuthorization
 import com.luckycart.model.TransactionResponse
 import com.luckycart.samplesdk.model.*
+import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
@@ -49,7 +50,12 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun sendCard(transactionResponse: TransactionResponse) {
-        Log.d("transactionResponse",""+transactionResponse)
+        transactionResponse.introMobile?.let { img-> transactionResponse.mobileUrl?.let {
+            (mContext as MainActivity).showFragmentGame(img,
+                it
+            )
+        } }
+
     }
 
     private fun loadBannerHomePage() {
