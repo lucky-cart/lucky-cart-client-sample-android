@@ -1,4 +1,4 @@
-package com.luckycart.samplesdk.ui
+package com.luckycart.samplesdk.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

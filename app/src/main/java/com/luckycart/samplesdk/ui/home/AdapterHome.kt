@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
-import com.luckycart.samplesdk.ui.WebViewFragment
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import kotlinx.android.synthetic.main.item_home.view.*
 
