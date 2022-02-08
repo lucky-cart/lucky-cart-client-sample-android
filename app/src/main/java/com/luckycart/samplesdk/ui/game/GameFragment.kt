@@ -13,14 +13,11 @@ import com.luckycart.samplesdk.ui.home.HomeFragment
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_GAME_IMG
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_GAME_URL
 import kotlinx.android.synthetic.main.fragment_game.*
-import kotlinx.android.synthetic.main.fragment_game.recycle
 
 class GameFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_game, container, false)
     }
@@ -31,12 +28,20 @@ class GameFragment : Fragment() {
         val urlGame = arguments?.getStringArrayList(INTENT_FRAGMENT_GAME_URL)
         val listGame = ArrayList<Game>()
         if (imgGame != null) {
-            for (i in 0 until imgGame.size)
-                listGame.add(Game(null, null, null, null, null, urlGame?.get(i), imgGame[i]))
+            for (i in 0 until imgGame.size) listGame.add(
+                Game(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    urlGame?.get(i),
+                    imgGame[i]
+                )
+            )
         }
         recycle.visibility = View.VISIBLE
-        recycle.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recycle.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycle.adapter = context?.let { GameAdapter(it, listGame) }
 
         btnAgain.setOnClickListener {

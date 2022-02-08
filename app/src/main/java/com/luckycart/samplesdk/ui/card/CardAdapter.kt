@@ -9,11 +9,11 @@ import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Transaction
 import kotlinx.android.synthetic.main.item_card.view.*
 
-class CardAdapter(var context: Context, var listProduct: List<Transaction>) :
+class CardAdapter(var context: Context, private var listProduct: List<Transaction>) :
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_card, parent, false)
+        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
         return ViewHolder(v)
     }
 
@@ -26,6 +26,7 @@ class CardAdapter(var context: Context, var listProduct: List<Transaction>) :
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         fun bindViewProduct(item: Transaction) {
             itemView.txtName.text = item.product.name
             itemView.txtPrice.text =

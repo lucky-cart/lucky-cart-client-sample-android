@@ -11,7 +11,7 @@ import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
 import kotlinx.android.synthetic.main.item_banner.view.*
 
-class ProductsAndBannerAdapter(var context: Context, var listProduct: ArrayList<Product>) :
+class ProductsAndBannerAdapter(var context: Context, private var listProduct: ArrayList<Product>) :
     RecyclerView.Adapter<ProductsAndBannerAdapter.ViewHolder>() {
 
     var listener: AddProductToCard? = null
@@ -22,7 +22,7 @@ class ProductsAndBannerAdapter(var context: Context, var listProduct: ArrayList<
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindViewBanner(listProduct[position])
+        with(holder) { bindViewBanner(listProduct[position]) }
     }
 
     override fun getItemCount(): Int {

@@ -13,11 +13,11 @@ import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_GAME_URL
 import kotlinx.android.synthetic.main.item_home.view.*
 
-class GameAdapter(var context: Context, var listGame: ArrayList<Game>) :
+class GameAdapter(var context: Context, private var listGame: ArrayList<Game>) :
     RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_home, parent, false)
+        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false)
         return ViewHolder(v)
     }
 
@@ -30,10 +30,9 @@ class GameAdapter(var context: Context, var listGame: ArrayList<Game>) :
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         fun bindViewBanner(item: Game) {
-            Glide.with(context)
-                .load(item.mobileGameImage)
-                .into(itemView.imgBanner)
+            Glide.with(context).load(item.mobileGameImage).into(itemView.imgBanner)
             itemView.imgBanner.setOnClickListener {
                 val intent = Intent(context, WebViewActivity::class.java)
                 intent.putExtra(INTENT_FRAGMENT_GAME_URL, item.mobileGameUrl)

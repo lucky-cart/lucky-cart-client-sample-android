@@ -6,12 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.luckycart.local.Prefs
 import com.luckycart.model.*
-import com.luckycart.samplesdk.model.*
+import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
 
 class MainViewModel : ViewModel(), LuckyCartListenerCallback {
+
     private lateinit var mContext: Context
     private var luckyCartSDK: LuckCartSDK? = null
     private lateinit var availableBanners: Banners
@@ -57,8 +58,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
             game.mobileGameUrl?.let { listUrlGame.add(it) }
         }
         (mContext as MainActivity).showFragmentGame(
-            listGame,
-            listUrlGame
+            listGame, listUrlGame
         )
     }
 
@@ -66,20 +66,16 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         getBannerCategory = false
         availableBanners.homepage?.forEach { homePage ->
             luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, homePage)
-
         }
     }
 
     fun loadBannerCategory(pageId: String) {
         shopID = pageId
         getBannerCategory = true
-        if (luckyCartSDK == null)
-            luckyCartSDK = LuckCartSDK(mContext)
+        if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         Prefs(mContext).banners.categories?.forEach {
-            if (it.contains(shopID))
-                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
-
+            if (it.contains(shopID)) luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
         }
 
     }
@@ -87,8 +83,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun loadShopBanner(pageId: String) {
         shopID = pageId
         getBannerCategory = true
-        if (luckyCartSDK == null)
-            luckyCartSDK = LuckCartSDK(mContext)
+        if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         Prefs(mContext).banners.homepage?.forEach {
             luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it + "_$shopID")
@@ -123,8 +118,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     fun sendCard(ttc: Float) {
-        if (luckyCartSDK == null)
-            luckyCartSDK = LuckCartSDK(mContext)
+        if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         luckyCartSDK?.sendCard(CARD_ID, ttc)
     }

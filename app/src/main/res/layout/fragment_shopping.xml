@@ -15,7 +15,8 @@
         android:background="@color/grey1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/imgCoffee"
         android:layout_width="0dp"
@@ -26,7 +27,8 @@
         android:layout_marginTop="@dimen/small_margin"
         app:layout_constraintTop_toBottomOf="@id/view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/app_name" />
 
 
     <View
@@ -39,7 +41,7 @@
         android:background="@color/grey1"
         app:layout_constraintTop_toBottomOf="@id/imgCoffee"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imgFruit"
@@ -51,7 +53,8 @@
         android:layout_marginTop="@dimen/small_margin"
         app:layout_constraintTop_toBottomOf="@id/viewFruit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/app_name" />
 
 
     <View
@@ -63,6 +66,6 @@
         android:background="@color/grey1"
         app:layout_constraintTop_toBottomOf="@id/imgFruit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

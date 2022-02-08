@@ -16,9 +16,7 @@ import kotlinx.android.synthetic.main.fragment_shopping.*
 class ShoppingFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_shopping, container, false)
 
@@ -29,10 +27,22 @@ class ShoppingFragment : Fragment() {
         val productsName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
         val productPrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
         imgCoffee.setOnClickListener {
-            (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_COFFE_ID,null,productsName,productPrice)
+            (context as MainActivity).showFragment(
+                ProductsAndBannerFragment(),
+                CATEGORY_COFFE_ID,
+                null,
+                productsName,
+                productPrice
+            )
         }
         imgFruit.setOnClickListener {
-            (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_FRUITS_ID,null,productsName,productPrice)
+            (context as MainActivity).showFragment(
+                ProductsAndBannerFragment(),
+                CATEGORY_FRUITS_ID,
+                null,
+                productsName,
+                productPrice
+            )
         }
     }
 }

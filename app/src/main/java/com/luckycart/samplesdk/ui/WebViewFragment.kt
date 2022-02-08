@@ -4,19 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
 import kotlinx.android.synthetic.main.fragment_webview.*
-import android.webkit.WebViewClient
-
 
 class WebViewFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_webview, container, false)
     }

@@ -9,16 +9,15 @@ import com.bumptech.glide.Glide
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
+import com.luckycart.samplesdk.ui.WebViewFragment
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import kotlinx.android.synthetic.main.item_home.view.*
-import com.luckycart.samplesdk.ui.WebViewFragment
 
-
-class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>) :
+class AdapterHome(var context: Context, private var listBanner: ArrayList<BannerDetails>) :
     RecyclerView.Adapter<AdapterHome.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_home, parent, false)
+        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false)
         return ViewHolder(v)
     }
 
@@ -31,21 +30,16 @@ class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         fun bindViewBanner(item: BannerDetails) {
-            Glide.with(context)
-                .load(item.image_url)
-                .into(itemView.imgBanner)
+            Glide.with(context).load(item.image_url).into(itemView.imgBanner)
             itemView.imgBanner.setOnClickListener {
                 if (item.action?.type.isNullOrEmpty()) {
                     (context as MainActivity).showFragment(
-                        WebViewFragment(),
-                        null,
-                        item.redirect_url, null, null
+                        WebViewFragment(), null, item.redirect_url, null, null
                     )
                 } else (context as MainActivity).showFragment(
-                    ProductsAndBannerFragment(),
-                    item.action?.ref,
-                    "homepage", null, null
+                    ProductsAndBannerFragment(), item.action?.ref, "homepage", null, null
                 )
             }
         }

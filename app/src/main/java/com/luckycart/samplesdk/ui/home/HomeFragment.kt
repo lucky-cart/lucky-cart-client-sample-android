@@ -16,13 +16,12 @@ import com.luckycart.samplesdk.ui.ShoppingFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
+
     private lateinit var mainViewModel: MainViewModel
     private lateinit var listBannerDetails: ArrayList<BannerDetails>
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -44,7 +43,6 @@ class HomeFragment : Fragment() {
                 }
                 is GetBannerState.OnError -> recycle.visibility = View.GONE
             }
-
         })
 
         btnShopping.setOnClickListener {
@@ -53,8 +51,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        mainViewModel =
-            ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         context?.let { mainViewModel.getContext(it) }
     }
 }

@@ -13,7 +13,8 @@
         android:layout_marginTop="@dimen/bigger_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/app_name" />
 
     <TextView
         android:id="@+id/txtWelcome"
@@ -25,7 +26,7 @@
         android:layout_marginTop="@dimen/medium_margin"
         app:layout_constraintTop_toBottomOf="@+id/imgLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle"

@@ -11,20 +11,19 @@ import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.model.Transaction
 import com.luckycart.samplesdk.ui.MainViewModel
-import com.luckycart.samplesdk.utils.*
+import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD
+import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD_TTC
 import kotlinx.android.synthetic.main.fragment_card.*
 
 class CardFragment : Fragment() {
+
     private lateinit var mainViewModel: MainViewModel
     private var listProduct = ArrayList<Product>()
     private var productPrice: Float = 0.0f
     private var productsName = ArrayList<String>()
 
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_card, container, false)
 
@@ -40,8 +39,7 @@ class CardFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        mainViewModel =
-            ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         context?.let { mainViewModel.getContext(it) }
     }
 
@@ -58,15 +56,12 @@ class CardFragment : Fragment() {
             listProduct.forEach { product ->
                 if (product.name == name) {
                     listProductAddedToCard.add(
-                        Transaction(
-                            product,
-                            productsName.count { it == product.name })
+                        Transaction(product, productsName.count { it == product.name })
                     )
                 }
             }
         }
-        rvProduct.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvProduct.adapter =
             context?.let { CardAdapter(it, listProductAddedToCard.toSet().toList()) }
         txtProduct.text = getString(R.string.product, productsName.size.toString())
