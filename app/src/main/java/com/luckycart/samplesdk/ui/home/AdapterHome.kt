@@ -40,12 +40,12 @@ class AdapterHome(var context: Context, var listBanner: ArrayList<BannerDetails>
                     (context as MainActivity).showFragment(
                         WebViewFragment(),
                         null,
-                        item.redirect_url
+                        item.redirect_url, null, null
                     )
                 } else (context as MainActivity).showFragment(
                     ProductsAndBannerFragment(),
                     item.action?.ref,
-                    "homepage"
+                    "homepage", null, null
                 )
             }
         }

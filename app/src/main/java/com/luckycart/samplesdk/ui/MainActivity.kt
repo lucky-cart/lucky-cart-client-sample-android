@@ -5,11 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.luckycart.samplesdk.utils.CUSTOMER_ID
 import com.luckycart.samplesdk.R
+import com.luckycart.samplesdk.ui.card.CardFragment
 import com.luckycart.samplesdk.ui.home.HomeFragment
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_ID
+import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlin.system.exitProcess
 
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         txtCustomer.text = getString(R.string.customer, CUSTOMER_ID)
         setUpViewModel()
-        showFragment(HomeFragment(), null, null)
+        showFragment(HomeFragment(), null, null,null,null)
 
 
     }
@@ -34,8 +33,10 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.getContext(this)
     }
 
-    fun showFragment(fragment: Fragment, shopID: String?, shopType: String?) {
+    fun showFragment(fragment: Fragment, shopID: String?, shopType: String?,product: ArrayList<String>?,ttc:Float?) {
         val args = Bundle()
+        args.putStringArrayList(INTENT_FRAGMENT_CARD, product)
+        ttc?.let { args.putFloat(INTENT_FRAGMENT_CARD_TTC, it) }
         args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
         args.putString(INTENT_FRAGMENT_SHOP, shopType)
         fragment.arguments = args

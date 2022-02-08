@@ -1,6 +1,7 @@
 package com.luckycart.samplesdk.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,6 +49,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun sendCard(transactionResponse: TransactionResponse) {
+        Log.d("transactionResponse",""+transactionResponse)
     }
 
     private fun loadBannerHomePage() {
@@ -89,7 +91,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         mContext = context
     }
 
-    fun updateListProduct(shopId: String): ArrayList<Product> {
+    fun updateProductOfShopId(shopId: String): ArrayList<Product> {
         val listProduct = ArrayList<Product>()
         when (shopId) {
             CATEGORY_COFFE_ID -> {
@@ -118,5 +120,24 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
             }
         }
         return listProduct
+    }
+
+    fun updateAllProduct(): ArrayList<Product> {
+        val listProduct = ArrayList<Product>()
+        listProduct.add(Coffees().firstProduct)
+        listProduct.add(Coffees().secondProduct)
+        listProduct.add(Coffees().thirdProduct)
+        listProduct.add(Coffees().fourthProduct)
+        listProduct.add(Fruits().firstProduct)
+        listProduct.add(Fruits().secondProduct)
+        listProduct.add(Fruits().thirdProduct)
+        listProduct.add(Fruits().fourthProduct)
+        return listProduct
+    }
+    fun sendCard(ttc:Float){
+        if (luckyCartSDK == null)
+            luckyCartSDK = LuckCartSDK(mContext)
+        luckyCartSDK?.setActionListener(this)
+        luckyCartSDK?.sendCard(CARD_ID,ttc)
     }
 }

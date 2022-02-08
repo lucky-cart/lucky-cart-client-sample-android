@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.item_banner.view.*
 
 class ProductsAndBannerAdapter(var context: Context, var listProduct: ArrayList<Product>) :
     RecyclerView.Adapter<ProductsAndBannerAdapter.ViewHolder>() {
+    var listener :AddProductToCard? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_banner, parent, false)
@@ -31,6 +32,9 @@ class ProductsAndBannerAdapter(var context: Context, var listProduct: ArrayList<
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindViewBanner(item: Product) {
+            itemView.btnAddCart.setOnClickListener {
+                listener?.onItemChoose(item)
+            }
             if (item.name.contains("banner")) {
                 itemView.txtName.visibility = View.GONE
                 itemView.btnAddCart.visibility = View.GONE
@@ -72,5 +76,8 @@ class ProductsAndBannerAdapter(var context: Context, var listProduct: ArrayList<
 
 
         }
+    }
+    interface AddProductToCard{
+        fun onItemChoose(product: Product)
     }
 }

@@ -15,6 +15,7 @@ import com.luckycart.samplesdk.ui.GetBannerState
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.ui.ShoppingFragment
+import com.luckycart.samplesdk.ui.card.CardFragment
 import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.fragment_banner.*
 
@@ -23,6 +24,10 @@ class ProductsAndBannerFragment : Fragment() {
     private var pageType = ""
     private var shopId = ""
     private var listProduct = ArrayList<Product>()
+    private var priceProduct: Float = 0.0F
+    private var productAddedToCard:Int = 0
+    private var listShopping = ArrayList<String>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,9 +41,18 @@ class ProductsAndBannerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
+        val productsHomeName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
+        val productHomePrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
         shopId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP).toString()
-        listProduct.addAll(mainViewModel.updateListProduct(shopId))
+        listProduct.addAll(mainViewModel.updateProductOfShopId(shopId))
+        if (productsHomeName != null) {
+            productAddedToCard = productsHomeName.size
+            listShopping.addAll(productsHomeName)
+        }
+        if (productHomePrice != null) {
+            priceProduct = productHomePrice
+        }
         initView()
         initClickListener()
         if (pageType == "homepage")
@@ -56,15 +70,23 @@ class ProductsAndBannerFragment : Fragment() {
                             0F
                         )
                     )
+                    val adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
                     recycleBanner.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    recycleBanner.adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
+                    recycleBanner.adapter = adapter
+                    adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCard {
+                        override fun onItemChoose(product: Product) {
+                            priceProduct += product.price
+                            productAddedToCard+=1
+                            txtPrice.text = getString(R.string.price,priceProduct.toString())
+                            txtProduct.text= getString(R.string.product,productAddedToCard.toString())
+                            listShopping.add(product.name)
+                        }
+
+                    }
                 }
                 is GetBannerState.OnError -> {
                     Log.d("Error", bannerState.error)
-                    recycleBanner.layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    recycleBanner.adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
                 }
             }
 
@@ -82,21 +104,37 @@ class ProductsAndBannerFragment : Fragment() {
             CATEGORY_COFFE_ID -> title.text = Coffees().name
             CATEGORY_FRUITS_ID -> title.text = Fruits().name
             SHOP_HOME_PAGE_ID -> {
-                title.text = getString(R.string.coffee_promotion,CoffeeBrothers().brand.name)
-                context?.let {title.setTextColor(ContextCompat.getColor(it, R.color.blue1))  }
+                title.text = getString(R.string.coffee_promotion, CoffeeBrothers().brand.name)
+                context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
                 btnCheckOut.visibility = View.GONE
                 btnShop.visibility = View.VISIBLE
                 txtPrice.visibility = View.GONE
+                txtProduct.visibility = View.GONE
+
             }
         }
+        val adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
         recycleBanner.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recycleBanner.adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
+        recycleBanner.adapter = adapter
+        adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCard {
+            override fun onItemChoose(product: Product) {
+                priceProduct += product.price
+                productAddedToCard+=1
+                txtPrice.text = getString(R.string.price,priceProduct.toString())
+                txtProduct.text= getString(R.string.product,productAddedToCard.toString())
+                listShopping.add(product.name)
+            }
+
+        }
     }
 
     private fun initClickListener() {
         btnShop.setOnClickListener {
-            (context as MainActivity).showFragment(ShoppingFragment(), null, null)
+            (context as MainActivity).showFragment(ShoppingFragment(),null,null, listShopping, priceProduct)
+        }
+        btnCheckOut.setOnClickListener {
+            (context as MainActivity).showFragment(CardFragment(),null,null,listShopping ,priceProduct)
         }
     }
 }

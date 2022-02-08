@@ -5,12 +5,15 @@
     <string name="start_shopping">Start Shopping</string>
     <string name="customer">LuckyCart customer \n %1$S</string>
     <string name="add_cart">Add To Cart</string>
-    <string name="product">Products</string>
+    <string name="product"> %1$S Products </string>
+    <string name="price"> %1$S €</string>
     <string name="check_out">Check Out</string>
     <string name="coffee">Coffees</string>
     <string name="fruit">Fruits</string>
     <string name="coffee_promotion">Promotion\n %1$S</string>
     <string name="keep_shopping">Continue Shopping</string>
+    <string name="total">Total:</string>
+    <string name="pay">Pay</string>
 
 
 </resources>

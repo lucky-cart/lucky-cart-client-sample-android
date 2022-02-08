@@ -10,6 +10,7 @@ const val CATEGORY_FRUITS_ID = "200"
 const val INTENT_FRAGMENT_SHOP_ID = "shopId"
 const val INTENT_FRAGMENT_SHOP = "shop"
 const val CARD_ID = "cart1236"
-
+const val INTENT_FRAGMENT_CARD = "checkout"
+const val INTENT_FRAGMENT_CARD_TTC = "price"
 
 
