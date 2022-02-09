@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.*
 import com.luckycart.samplesdk.ui.GetBannerState
@@ -25,7 +26,7 @@ class ProductsAndBannerFragment : Fragment() {
     private var shopId = ""
     private var listProduct = ArrayList<Product>()
     private var priceProduct: Float = 0.0F
-    private var productAddedToCard:Int = 0
+    private var productAddedToCard: Int = 0
     private var listShopping = ArrayList<String>()
 
 
@@ -58,28 +59,23 @@ class ProductsAndBannerFragment : Fragment() {
         if (pageType == "homepage")
             mainViewModel.loadShopBanner(shopId)
         else mainViewModel.loadBannerCategory(shopId)
+        val listBanner = ArrayList<BannerDetails>()
         mainViewModel.getBannerCategoryDetails.observe(viewLifecycleOwner, { bannerState ->
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
-                    listProduct.add(
-                        Product(
-                            "banner",
-                            "banner",
-                            bannerState.response.image_url,
-                            null,
-                            0F
-                        )
-                    )
-                    val adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
+                    listBanner.add(bannerState.response)
+                    val adapter =
+                        context?.let { ProductsAndBannerAdapter(it, listProduct, listBanner) }
                     recycleBanner.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     recycleBanner.adapter = adapter
                     adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCard {
                         override fun onItemChoose(product: Product) {
                             priceProduct += product.price
-                            productAddedToCard+=1
-                            txtPrice.text = getString(R.string.price,priceProduct.toString())
-                            txtProduct.text= getString(R.string.product,productAddedToCard.toString())
+                            productAddedToCard += 1
+                            txtPrice.text = getString(R.string.price, priceProduct.toString())
+                            txtProduct.text =
+                                getString(R.string.product, productAddedToCard.toString())
                             listShopping.add(product.name)
                         }
 
@@ -113,16 +109,16 @@ class ProductsAndBannerFragment : Fragment() {
 
             }
         }
-        val adapter = context?.let { ProductsAndBannerAdapter(it, listProduct) }
+        val adapter = context?.let { ProductsAndBannerAdapter(it, listProduct, null) }
         recycleBanner.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycleBanner.adapter = adapter
         adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCard {
             override fun onItemChoose(product: Product) {
                 priceProduct += product.price
-                productAddedToCard+=1
-                txtPrice.text = getString(R.string.price,priceProduct.toString())
-                txtProduct.text= getString(R.string.product,productAddedToCard.toString())
+                productAddedToCard += 1
+                txtPrice.text = getString(R.string.price, priceProduct.toString())
+                txtProduct.text = getString(R.string.product, productAddedToCard.toString())
                 listShopping.add(product.name)
             }
 
@@ -131,10 +127,22 @@ class ProductsAndBannerFragment : Fragment() {
 
     private fun initClickListener() {
         btnShop.setOnClickListener {
-            (context as MainActivity).showFragment(ShoppingFragment(),null,null, listShopping, priceProduct)
+            (context as MainActivity).showFragment(
+                ShoppingFragment(),
+                null,
+                null,
+                listShopping,
+                priceProduct
+            )
         }
         btnCheckOut.setOnClickListener {
-            (context as MainActivity).showFragment(CardFragment(),null,null,listShopping ,priceProduct)
+            (context as MainActivity).showFragment(
+                CardFragment(),
+                null,
+                null,
+                listShopping,
+                priceProduct
+            )
         }
     }
 }

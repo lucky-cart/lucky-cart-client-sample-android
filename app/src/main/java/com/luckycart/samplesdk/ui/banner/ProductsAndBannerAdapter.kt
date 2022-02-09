@@ -7,71 +7,97 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.luckycart.samplesdk.R
+import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.model.Product
-import kotlinx.android.synthetic.main.item_banner.view.*
+import kotlinx.android.synthetic.main.item_home.view.*
+import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductsAndBannerAdapter(var context: Context, private var listProduct: ArrayList<Product>) :
-    RecyclerView.Adapter<ProductsAndBannerAdapter.ViewHolder>() {
 
+class ProductsAndBannerAdapter(
+    var context: Context,
+    var listProduct: ArrayList<Product>,
+    var listBanner: ArrayList<BannerDetails>?
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     var listener: AddProductToCard? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_banner, parent, false)
-        return ViewHolder(v)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val viewProduct: View =
+            LayoutInflater.from(parent.context)
+                .inflate(com.luckycart.samplesdk.R.layout.item_product, parent, false)
+        val viewBanner: View =
+            LayoutInflater.from(parent.context)
+                .inflate(com.luckycart.samplesdk.R.layout.item_home, parent, false)
+        return if (viewType == 0) {
+            ProductViewModel(viewProduct)
+        } else BannerViewModel(viewBanner)
+
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder) { bindViewBanner(listProduct[position]) }
-    }
 
     override fun getItemCount(): Int {
-        return listProduct.size
+        return listProduct.size + (listBanner?.size ?: 0)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    override fun getItemViewType(position: Int): Int {
+        if (position < listProduct.size) {
+            return 0
+        }
+        return if (position - listProduct.size < listBanner?.size ?: 0) {
+            1
+        } else -1
+    }
 
-        fun bindViewBanner(item: Product) {
+    inner class ProductViewModel(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindViewProduct(item: Product) {
             itemView.btnAddCart.setOnClickListener {
                 listener?.onItemChoose(item)
             }
-            if (item.name.contains("banner")) {
-                itemView.txtName.visibility = View.GONE
-                itemView.btnAddCart.visibility = View.GONE
-                Glide.with(context).load(item.imageName).into(itemView.imgBanner)
-            } else {
-                itemView.txtName.visibility = View.VISIBLE
-                itemView.btnAddCart.visibility = View.VISIBLE
-                itemView.txtName.text = item.name
-                when (item.imageName) {
-                    "coffee" -> itemView.imgSearch.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.coffee)
+            itemView.txtName.text = item.name
+            when (item.imageName) {
+                "coffee" -> itemView.imgSearch.setImageDrawable(
+                    ContextCompat.getDrawable(context, com.luckycart.samplesdk.R.drawable.coffee)
+                )
+                "coffee2" -> itemView.imgSearch.setImageDrawable(
+                    ContextCompat.getDrawable(context, com.luckycart.samplesdk.R.drawable.coffee2)
+                )
+                "bananas" -> itemView.imgSearch.setImageDrawable(
+                    ContextCompat.getDrawable(context, com.luckycart.samplesdk.R.drawable.bananas)
+                )
+                "coconut" -> itemView.imgSearch.setImageDrawable(
+                    ContextCompat.getDrawable(context, com.luckycart.samplesdk.R.drawable.coconut)
+                )
+                "applered" -> itemView.imgSearch.setImageDrawable(
+                    ContextCompat.getDrawable(context, com.luckycart.samplesdk.R.drawable.applered)
+                )
+                "applegreen" -> itemView.imgSearch.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        com.luckycart.samplesdk.R.drawable.applegreen
                     )
-                    "coffee2" -> itemView.imgSearch.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.coffee2)
-                    )
-                    "bananas" -> itemView.imgSearch.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.bananas)
-                    )
-                    "coconut" -> itemView.imgSearch.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.coconut)
-                    )
-                    "applered" -> itemView.imgSearch.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.applered)
-                    )
-                    "applegreen" -> itemView.imgSearch.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.applegreen)
-                    )
-                }
-
+                )
             }
-
 
         }
     }
 
-    interface AddProductToCard {
+    inner class BannerViewModel(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindViewBanner(item: BannerDetails) {
+            Glide.with(context).load(item.image_url).into(itemView.imgBanner)
+        }
 
+    }
+
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        if (viewHolder is ProductViewModel) {
+            viewHolder.bindViewProduct(listProduct[position])
+        }
+        if (viewHolder is BannerViewModel) {
+            listBanner?.get(position - listProduct.size)?.let { viewHolder.bindViewBanner(it) }
+        }
+    }
+
+    interface AddProductToCard {
         fun onItemChoose(product: Product)
     }
 }
