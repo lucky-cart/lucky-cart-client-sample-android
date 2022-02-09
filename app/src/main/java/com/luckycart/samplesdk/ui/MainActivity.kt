@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         args.putStringArrayList(INTENT_FRAGMENT_CARD, product)
         ttc?.let { args.putFloat(INTENT_FRAGMENT_CARD_TTC, it) }
         args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
-        args.putString(INTENT_FRAGMENT_SHOP, shopType)
+        args.putString(INTENT_FRAGMENT_SHOP_TYPE, shopType)
         fragment.arguments = args
         supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
             .addToBackStack(fragment.javaClass.name).commit()

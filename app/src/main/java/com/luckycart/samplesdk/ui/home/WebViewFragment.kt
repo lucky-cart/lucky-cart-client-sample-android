@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import com.luckycart.samplesdk.R
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP
+import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_SHOP_TYPE
 import kotlinx.android.synthetic.main.fragment_webview.*
 
 class WebViewFragment : Fragment() {
@@ -20,7 +20,7 @@ class WebViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val url = arguments?.getString(INTENT_FRAGMENT_SHOP).toString()
+        val url = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
         webView.loadUrl(url)
         webView.isVerticalScrollBarEnabled = true
         webView.isHorizontalScrollBarEnabled = true

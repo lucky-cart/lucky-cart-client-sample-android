@@ -9,7 +9,7 @@ class FakeData {
     companion object {
 
         val coffeeBrothers = Brand("Coffee Brothers", "coffee_brothers")
-        private val queensBeverages = Brand("Queens Beverage", "queens_beverage")
+        val queensBeverages = Brand("Queens Beverage", "queens_beverage")
         private val locoBananas = Brand("Loco Bananas", "loco_bananas")
         private val bringYaFruit = Brand("Bring Ya Fruit", "bring_ya_fruit")
         private val firstCoffeeProduct: Product = Product(

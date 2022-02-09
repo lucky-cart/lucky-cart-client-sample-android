@@ -9,14 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.model.Product
+import com.luckycart.samplesdk.ui.MainActivity
+import com.luckycart.samplesdk.ui.home.WebViewFragment
 import kotlinx.android.synthetic.main.item_home.view.*
 import kotlinx.android.synthetic.main.item_product.view.*
 
 
 class ProductsAndBannerAdapter(
     var context: Context,
-    var listProduct: ArrayList<Product>,
-    var listBanner: ArrayList<BannerDetails>?
+    private var pageType: String?,
+    private var listProduct: ArrayList<Product>,
+    private var listBanner: ArrayList<BannerDetails>?
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     var listener: AddProductToCard? = null
@@ -84,6 +87,16 @@ class ProductsAndBannerAdapter(
     inner class BannerViewModel(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindViewBanner(item: BannerDetails) {
             Glide.with(context).load(item.image_url).into(itemView.imgBanner)
+            itemView.imgBanner.setOnClickListener {
+                if (item.action?.ref.isNullOrEmpty()) {
+                    (context as MainActivity).showFragment(
+                        WebViewFragment(), null, item.redirect_url, null, null
+                    )
+                } else (context as MainActivity).showFragment(
+                    ProductsAndBannerFragment(), item.action?.ref, pageType, null, null
+                )
+
+            }
         }
 
     }

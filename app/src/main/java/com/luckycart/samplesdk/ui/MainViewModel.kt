@@ -83,13 +83,22 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         }
     }
 
-    fun loadShopBanner(pageId: String) {
+    fun loadShopBanner(pageId: String, pageType: String) {
         shopID = pageId
         getBannerCategory = true
         if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        Prefs(mContext).banners.homepage?.forEach {
-            luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it + "_$shopID")
+        if (pageType == BANNER_HOMEPAGE)
+            Prefs(mContext).banners.homepage?.forEach {
+                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it + "_$shopID")
+            }
+        else {
+            Prefs(mContext).banners.categories?.forEach {
+                if (it.contains(shopID)) luckyCartSDK?.getBannerDetails(
+                    BANNER_CATEGORIES,
+                    it + "_$shopID"
+                )
+            }
         }
     }
 
@@ -97,14 +106,20 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         mContext = context
     }
 
-    fun updateProductOfShopId(shopId: String): ArrayList<Product> {
+    fun updateProductOfShopId(shopId: String, pageType: String?): ArrayList<Product> {
         val listProduct = ArrayList<Product>()
         when (shopId) {
-            CATEGORY_COFFE_ID -> listProduct.addAll(FakeData.coffees.products)
+            CATEGORY_COFFEE_ID -> listProduct.addAll(FakeData.coffees.products)
             CATEGORY_FRUITS_ID -> listProduct.addAll(FakeData.fruits.products)
-            SHOP_HOME_PAGE_ID -> {
-                for (product in FakeData.coffees.products) {
-                    if (product.brand == FakeData.coffeeBrothers) listProduct.add(product)
+            SHOP_PAGE_ID -> {
+                if (pageType == SHOP_COFFEE || pageType == BANNER_HOMEPAGE) {
+                    for (product in FakeData.coffees.products) {
+                        if (product.brand == FakeData.coffeeBrothers) listProduct.add(product)
+                    }
+                } else {
+                    for (product in FakeData.fruits.products) {
+                        if (product.brand == FakeData.queensBeverages) listProduct.add(product)
+                    }
                 }
             }
         }

@@ -10,6 +10,7 @@ import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
+import com.luckycart.samplesdk.utils.BANNER_HOMEPAGE
 import kotlinx.android.synthetic.main.item_home.view.*
 
 class AdapterHome(var context: Context, private var listBanner: ArrayList<BannerDetails>) :
@@ -38,7 +39,7 @@ class AdapterHome(var context: Context, private var listBanner: ArrayList<Banner
                         WebViewFragment(), null, item.redirect_url, null, null
                     )
                 } else (context as MainActivity).showFragment(
-                    ProductsAndBannerFragment(), item.action?.ref, "homepage", null, null
+                    ProductsAndBannerFragment(), item.action?.ref, BANNER_HOMEPAGE, null, null
                 )
             }
         }

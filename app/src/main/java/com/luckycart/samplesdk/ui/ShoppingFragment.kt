@@ -7,10 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
-import com.luckycart.samplesdk.utils.CATEGORY_COFFE_ID
-import com.luckycart.samplesdk.utils.CATEGORY_FRUITS_ID
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD
-import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD_TTC
+import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.fragment_shopping.*
 
 class ShoppingFragment : Fragment() {
@@ -29,8 +26,8 @@ class ShoppingFragment : Fragment() {
         imgCoffee.setOnClickListener {
             (context as MainActivity).showFragment(
                 ProductsAndBannerFragment(),
-                CATEGORY_COFFE_ID,
-                null,
+                CATEGORY_COFFEE_ID,
+                BANNER_CATEGORIES,
                 productsName,
                 productPrice
             )
@@ -39,7 +36,7 @@ class ShoppingFragment : Fragment() {
             (context as MainActivity).showFragment(
                 ProductsAndBannerFragment(),
                 CATEGORY_FRUITS_ID,
-                null,
+                BANNER_CATEGORIES,
                 productsName,
                 productPrice
             )

@@ -42,30 +42,34 @@ class ProductsAndBannerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
-        val productsHomeName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
-        val productHomePrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
+        val shopProductName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
+        val shopProductPrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
         shopId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
-        pageType = arguments?.getString(INTENT_FRAGMENT_SHOP).toString()
-        listProduct.addAll(mainViewModel.updateProductOfShopId(shopId))
-        if (productsHomeName != null) {
-            productAddedToCard = productsHomeName.size
-            listShopping.addAll(productsHomeName)
+        pageType = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
+        listProduct.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
+        if (shopProductName != null) {
+            productAddedToCard = shopProductName.size
+            listShopping.addAll(shopProductName)
         }
-        if (productHomePrice != null) {
-            priceProduct = productHomePrice
+        if (shopProductPrice != null) {
+            priceProduct = shopProductPrice
         }
         initView()
         initClickListener()
-        if (pageType == "homepage")
-            mainViewModel.loadShopBanner(shopId)
-        else mainViewModel.loadBannerCategory(shopId)
         val listBanner = ArrayList<BannerDetails>()
         mainViewModel.getBannerCategoryDetails.observe(viewLifecycleOwner, { bannerState ->
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
                     listBanner.add(bannerState.response)
                     val adapter =
-                        context?.let { ProductsAndBannerAdapter(it, listProduct, listBanner) }
+                        context?.let {
+                            ProductsAndBannerAdapter(
+                                it,
+                                pageType,
+                                listProduct,
+                                listBanner
+                            )
+                        }
                     recycleBanner.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     recycleBanner.adapter = adapter
@@ -96,20 +100,45 @@ class ProductsAndBannerFragment : Fragment() {
     }
 
     private fun initView() {
-        when (shopId) {
-            CATEGORY_COFFE_ID -> title.text = FakeData.coffees.name
-            CATEGORY_FRUITS_ID -> title.text = FakeData.fruits.name
-            SHOP_HOME_PAGE_ID -> {
+        if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS)
+            mainViewModel.loadShopBanner(shopId, pageType)
+        else mainViewModel.loadBannerCategory(shopId)
+        when (pageType) {
+            BANNER_CATEGORIES -> {
+                if (shopId == CATEGORY_COFFEE_ID) {
+                    title.text = FakeData.coffees.name
+                    pageType = SHOP_COFFEE
+                } else {
+                    title.text = FakeData.fruits.name
+                    pageType = SHOP_FRUITS
+                }
+            }
+            BANNER_HOMEPAGE -> {
                 title.text = getString(R.string.coffee_promotion, FakeData.coffeeBrothers.name)
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
                 btnCheckOut.visibility = View.GONE
                 btnShop.visibility = View.VISIBLE
                 txtPrice.visibility = View.GONE
                 txtProduct.visibility = View.GONE
-
+            }
+            SHOP_COFFEE -> {
+                title.text = getString(R.string.coffee_promotion, FakeData.coffeeBrothers.name)
+                context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
+                btnCheckOut.visibility = View.GONE
+                btnShop.visibility = View.VISIBLE
+                txtPrice.visibility = View.GONE
+                txtProduct.visibility = View.GONE
+            }
+            SHOP_FRUITS -> {
+                title.text = getString(R.string.coffee_promotion, FakeData.queensBeverages.name)
+                context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
+                btnCheckOut.visibility = View.GONE
+                btnShop.visibility = View.VISIBLE
+                txtPrice.visibility = View.GONE
+                txtProduct.visibility = View.GONE
             }
         }
-        val adapter = context?.let { ProductsAndBannerAdapter(it, listProduct, null) }
+        val adapter = context?.let { ProductsAndBannerAdapter(it, pageType, listProduct, null) }
         recycleBanner.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycleBanner.adapter = adapter
