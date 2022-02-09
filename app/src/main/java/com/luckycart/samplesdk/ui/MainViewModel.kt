@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.JsonObject
 import com.luckycart.local.Prefs
 import com.luckycart.model.*
 import com.luckycart.samplesdk.model.Product
@@ -53,9 +54,9 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     override fun getGame(game: GameResponse) {
         val listGame = ArrayList<String>()
         val listUrlGame = ArrayList<String>()
-        game.games?.forEach { game ->
-            game.mobileGameImage?.let { listGame.add(it) }
-            game.mobileGameUrl?.let { listUrlGame.add(it) }
+        game.games?.forEach { item ->
+            item.mobileGameImage?.let { listGame.add(it) }
+            item.mobileGameUrl?.let { listUrlGame.add(it) }
         }
         (mContext as MainActivity).showFragmentGame(
             listGame, listUrlGame
@@ -77,7 +78,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         Prefs(mContext).banners.categories?.forEach {
             if (it.contains(shopID)) luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it)
         }
-
     }
 
     fun loadShopBanner(pageId: String) {
@@ -88,8 +88,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         Prefs(mContext).banners.homepage?.forEach {
             luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it + "_$shopID")
         }
-
-
     }
 
     fun getContext(context: Context) {
@@ -117,9 +115,9 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         return listProduct
     }
 
-    fun sendCard(ttc: Float) {
+    fun sendCard(card: JsonObject) {
         if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        luckyCartSDK?.sendCard(CARD_ID, ttc)
+        luckyCartSDK?.sendCard(card)
     }
 }

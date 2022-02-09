@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.model.Transaction
 import com.luckycart.samplesdk.ui.MainViewModel
+import com.luckycart.samplesdk.utils.CARD_ID
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD_TTC
 import kotlinx.android.synthetic.main.fragment_card.*
@@ -45,7 +47,10 @@ class CardFragment : Fragment() {
 
     private fun initClickListener() {
         btnCheckOut.setOnClickListener {
-            mainViewModel.sendCard(productPrice)
+            val card = JsonObject()
+            card.addProperty("cartId", CARD_ID)
+            card.addProperty("ttc", productPrice)
+            mainViewModel.sendCard(card)
         }
     }
 
