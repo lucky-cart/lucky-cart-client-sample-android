@@ -17,6 +17,8 @@ import com.luckycart.samplesdk.utils.CARD_ID
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CARD_TTC
 import kotlinx.android.synthetic.main.fragment_card.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CardFragment : Fragment() {
 
@@ -51,6 +53,7 @@ class CardFragment : Fragment() {
     private fun initClickListener() {
         val products = JsonArray()
         val card = JsonObject()
+        val cardId = CARD_ID + Random().nextInt(1000000)
         listProductAddedToCard.toSet().toList().forEach {
             val product = JsonObject()
             product.addProperty("productId", it.product.name)
@@ -58,7 +61,7 @@ class CardFragment : Fragment() {
             product.addProperty("quantity", it.numberOfProduct.toString())
             products.add(product)
         }
-        card.addProperty("cartId", CARD_ID)
+        card.addProperty("cartId", cardId)
         card.addProperty("ttc", productPrice)
         card.add("products", products)
         btnCheckOut.setOnClickListener {

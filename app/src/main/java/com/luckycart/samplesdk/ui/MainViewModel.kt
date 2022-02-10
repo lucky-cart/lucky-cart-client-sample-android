@@ -11,6 +11,7 @@ import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
+import kotlin.collections.ArrayList
 
 class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
@@ -21,6 +22,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     var getBannerCategoryDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     private var getBannerCategory: Boolean = false
     private var shopID: String = ""
+    private var cardID: String = ""
 
     fun initLuckyCart() {
         val auth = LCAuthorization(AUTH_KEY, "")
@@ -48,7 +50,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun sendCard(transactionResponse: TransactionResponse) {
-        luckyCartSDK?.getGame(CARD_ID)
+        luckyCartSDK?.getGame(cardID)
     }
 
     override fun getGame(game: GameResponse) {
@@ -136,6 +138,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun sendCard(card: JsonObject) {
         if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
+        cardID = card.get("cartId").asString
         luckyCartSDK?.sendCard(card)
     }
 }
