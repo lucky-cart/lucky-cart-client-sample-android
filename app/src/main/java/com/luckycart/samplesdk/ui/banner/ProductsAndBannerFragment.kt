@@ -29,14 +29,12 @@ class ProductsAndBannerFragment : Fragment() {
     private var productAddedToCard: Int = 0
     private var listShopping = ArrayList<String>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_banner, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,8 +98,13 @@ class ProductsAndBannerFragment : Fragment() {
     }
 
     private fun initView() {
-        if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS)
+        if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS) {
+            btnCheckOut.visibility = View.GONE
+            btnShop.visibility = View.VISIBLE
+            txtPrice.visibility = View.GONE
+            txtProduct.visibility = View.GONE
             mainViewModel.loadShopBanner(shopId, pageType)
+        }
         else mainViewModel.loadBannerCategory(shopId)
         when (pageType) {
             BANNER_CATEGORIES -> {
@@ -116,26 +119,14 @@ class ProductsAndBannerFragment : Fragment() {
             BANNER_HOMEPAGE -> {
                 title.text = getString(R.string.coffee_promotion, FakeData.coffeeBrothers.name)
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
-                btnCheckOut.visibility = View.GONE
-                btnShop.visibility = View.VISIBLE
-                txtPrice.visibility = View.GONE
-                txtProduct.visibility = View.GONE
             }
             SHOP_COFFEE -> {
                 title.text = getString(R.string.coffee_promotion, FakeData.coffeeBrothers.name)
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
-                btnCheckOut.visibility = View.GONE
-                btnShop.visibility = View.VISIBLE
-                txtPrice.visibility = View.GONE
-                txtProduct.visibility = View.GONE
             }
             SHOP_FRUITS -> {
                 title.text = getString(R.string.coffee_promotion, FakeData.queensBeverages.name)
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
-                btnCheckOut.visibility = View.GONE
-                btnShop.visibility = View.VISIBLE
-                txtPrice.visibility = View.GONE
-                txtProduct.visibility = View.GONE
             }
         }
         val adapter = context?.let { ProductsAndBannerAdapter(it, pageType, listProduct, null) }
@@ -150,28 +141,15 @@ class ProductsAndBannerFragment : Fragment() {
                 txtProduct.text = getString(R.string.product, productAddedToCard.toString())
                 listShopping.add(product.name)
             }
-
         }
     }
 
     private fun initClickListener() {
         btnShop.setOnClickListener {
-            (context as MainActivity).showFragment(
-                ShoppingFragment(),
-                null,
-                null,
-                listShopping,
-                priceProduct
-            )
+            (context as MainActivity).showFragment(ShoppingFragment(), null, null, listShopping, priceProduct)
         }
         btnCheckOut.setOnClickListener {
-            (context as MainActivity).showFragment(
-                CardFragment(),
-                null,
-                null,
-                listShopping,
-                priceProduct
-            )
+            (context as MainActivity).showFragment(CardFragment(), null, null, listShopping, priceProduct)
         }
     }
 }

@@ -29,15 +29,7 @@ class GameFragment : Fragment() {
         val listGame = ArrayList<Game>()
         if (imgGame != null) {
             for (i in 0 until imgGame.size) listGame.add(
-                Game(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    urlGame?.get(i),
-                    imgGame[i]
-                )
+                Game(null, null, null, null, null, urlGame?.get(i), imgGame[i])
             )
         }
         recycle.visibility = View.VISIBLE

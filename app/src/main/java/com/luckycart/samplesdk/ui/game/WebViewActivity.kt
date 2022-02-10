@@ -15,9 +15,7 @@ class WebViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_webview)
         val url = intent.extras?.getString(INTENT_FRAGMENT_GAME_URL)
-        if (url != null) {
-            webView.loadUrl(url)
-        }
+        if (url != null) webView.loadUrl(url)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
         webView.settings.builtInZoomControls = true

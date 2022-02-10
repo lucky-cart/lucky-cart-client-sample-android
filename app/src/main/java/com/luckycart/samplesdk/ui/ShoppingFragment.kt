@@ -16,7 +16,6 @@ class ShoppingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_shopping, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -24,22 +23,10 @@ class ShoppingFragment : Fragment() {
         val productsName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
         val productPrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
         imgCoffee.setOnClickListener {
-            (context as MainActivity).showFragment(
-                ProductsAndBannerFragment(),
-                CATEGORY_COFFEE_ID,
-                BANNER_CATEGORIES,
-                productsName,
-                productPrice
-            )
+            (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_COFFEE_ID, BANNER_CATEGORIES, productsName, productPrice)
         }
         imgFruit.setOnClickListener {
-            (context as MainActivity).showFragment(
-                ProductsAndBannerFragment(),
-                CATEGORY_FRUITS_ID,
-                BANNER_CATEGORIES,
-                productsName,
-                productPrice
-            )
+            (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_FRUITS_ID, BANNER_CATEGORIES, productsName, productPrice)
         }
     }
 }

@@ -28,12 +28,10 @@ class CardFragment : Fragment() {
     private var productsName = ArrayList<String>()
     private val listProductAddedToCard = ArrayList<Transaction>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_card, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,7 +73,9 @@ class CardFragment : Fragment() {
             listProduct.forEach { product ->
                 if (product.name == name) {
                     listProductAddedToCard.add(
-                        Transaction(product, productsName.count { it == product.name })
+                        Transaction(
+                            product,
+                            productsName.count { it == product.name })
                     )
                 }
             }

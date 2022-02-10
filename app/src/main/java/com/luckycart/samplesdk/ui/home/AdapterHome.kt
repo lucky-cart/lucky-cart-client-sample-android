@@ -17,8 +17,7 @@ class AdapterHome(var context: Context, private var listBanner: ArrayList<Banner
     RecyclerView.Adapter<AdapterHome.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false)
-        return ViewHolder(v)
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -34,13 +33,8 @@ class AdapterHome(var context: Context, private var listBanner: ArrayList<Banner
         fun bindViewBanner(item: BannerDetails) {
             Glide.with(context).load(item.image_url).into(itemView.imgBanner)
             itemView.imgBanner.setOnClickListener {
-                if (item.action?.type.isNullOrEmpty()) {
-                    (context as MainActivity).showFragment(
-                        WebViewFragment(), null, item.redirect_url, null, null
-                    )
-                } else (context as MainActivity).showFragment(
-                    ProductsAndBannerFragment(), item.action?.ref, BANNER_HOMEPAGE, null, null
-                )
+                if (item.action?.type.isNullOrEmpty()) (context as MainActivity).showFragment(WebViewFragment(), null, item.redirect_url, null, null)
+                else (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.action?.ref, BANNER_HOMEPAGE, null, null)
             }
         }
     }

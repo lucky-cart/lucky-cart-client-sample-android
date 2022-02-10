@@ -31,7 +31,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         luckyCartSDK?.setUser(CUSTOMER_ID)
         luckyCartSDK?.setActionListener(this)
         luckyCartSDK?.listAvailableBanners()
-
     }
 
     override fun listAvailableBanners(banners: Banners) {

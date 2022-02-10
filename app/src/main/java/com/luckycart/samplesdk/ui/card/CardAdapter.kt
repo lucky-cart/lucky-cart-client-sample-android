@@ -13,8 +13,9 @@ class CardAdapter(var context: Context, private var listProduct: List<Transactio
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
-        return ViewHolder(v)
+        return ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -32,7 +33,6 @@ class CardAdapter(var context: Context, private var listProduct: List<Transactio
             itemView.txtPrice.text =
                 context.getString(R.string.price, item.product.price.toString())
             itemView.txtProduct.text = item.numberOfProduct.toString()
-
         }
     }
 }
