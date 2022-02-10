@@ -53,7 +53,7 @@ class CardFragment : Fragment() {
     private fun initClickListener() {
         val products = JsonArray()
         val card = JsonObject()
-        val cardId = CARD_ID + Random().nextInt(1000000)
+        val cardId = CARD_ID + Random().nextInt(9999999)
         listProductAddedToCard.toSet().toList().forEach {
             val product = JsonObject()
             product.addProperty("productId", it.product.name)
