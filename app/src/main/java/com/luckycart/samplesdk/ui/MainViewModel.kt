@@ -111,7 +111,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         when (shopId) {
             CATEGORY_COFFEE_ID -> listProduct.addAll(FakeData.coffees.products)
             CATEGORY_FRUITS_ID -> listProduct.addAll(FakeData.fruits.products)
-            SHOP_PAGE_ID -> {
+            else -> {
                 if (pageType == SHOP_COFFEE || pageType == BANNER_HOMEPAGE) {
                     for (product in FakeData.coffees.products) {
                         if (product.brand == FakeData.coffeeBrothers) listProduct.add(product)

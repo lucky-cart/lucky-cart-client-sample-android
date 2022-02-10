@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
@@ -23,6 +24,8 @@ class CardFragment : Fragment() {
     private var listProduct = ArrayList<Product>()
     private var productPrice: Float = 0.0f
     private var productsName = ArrayList<String>()
+    private val listProductAddedToCard = ArrayList<Transaction>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -46,16 +49,24 @@ class CardFragment : Fragment() {
     }
 
     private fun initClickListener() {
+        val products = JsonArray()
+        val card = JsonObject()
+        listProductAddedToCard.toSet().toList().forEach {
+            val product = JsonObject()
+            product.addProperty("productId", it.product.name)
+            product.addProperty("ttc", it.product.price.toString())
+            product.addProperty("quantity", it.numberOfProduct.toString())
+            products.add(product)
+        }
+        card.addProperty("cartId", CARD_ID)
+        card.addProperty("ttc", productPrice)
+        card.add("products", products)
         btnCheckOut.setOnClickListener {
-            val card = JsonObject()
-            card.addProperty("cartId", CARD_ID)
-            card.addProperty("ttc", productPrice)
             mainViewModel.sendCard(card)
         }
     }
 
     private fun initView() {
-        val listProductAddedToCard = ArrayList<Transaction>()
         listProduct.addAll(mainViewModel.updateAllProduct())
         productsName.forEach { name ->
             listProduct.forEach { product ->
