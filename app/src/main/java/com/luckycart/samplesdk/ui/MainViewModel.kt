@@ -1,6 +1,7 @@
 package com.luckycart.samplesdk.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     private var getBannerCategory: Boolean = false
     private var shopID: String = ""
     private var cardID: String = ""
+    private var retryGetGame = 0
 
     fun initLuckyCart() {
         val auth = LCAuthorization(AUTH_KEY, "")
@@ -62,6 +64,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         (mContext as MainActivity).showFragmentGame(
             listGame, listUrlGame
         )
+    }
+
+    override fun onError(error: String?) {
+        retryGetGame += 1
+        if (retryGetGame == 10)
+            Toast.makeText(mContext, "Error: $error", Toast.LENGTH_SHORT).show()
+
     }
 
     private fun loadBannerHomePage() {
