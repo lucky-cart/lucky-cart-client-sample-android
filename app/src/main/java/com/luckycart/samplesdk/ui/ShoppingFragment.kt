@@ -23,10 +23,22 @@ class ShoppingFragment : Fragment() {
         val productsName = arguments?.getStringArrayList(INTENT_FRAGMENT_CART)
         val productPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
         imgCoffee.setOnClickListener {
-            (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_COFFEE_ID, BANNER_CATEGORIES, productsName, productPrice)
+            (context as MainActivity).showFragment(
+                ProductsAndBannerFragment(),
+                CATEGORY_COFFEE_ID,
+                BANNER_CATEGORIES,
+                productsName,
+                productPrice
+            )
         }
         imgFruit.setOnClickListener {
-            (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_FRUITS_ID, BANNER_CATEGORIES, productsName, productPrice)
+            (context as MainActivity).showFragment(
+                ProductsAndBannerFragment(),
+                CATEGORY_FRUITS_ID,
+                BANNER_CATEGORIES,
+                productsName,
+                productPrice
+            )
         }
     }
 }

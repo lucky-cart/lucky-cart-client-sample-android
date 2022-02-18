@@ -76,7 +76,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     private fun loadBannerHomePage() {
         getBannerCategory = false
         availableBanners.homepage?.forEach { format ->
-            luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, format,"")
+            luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, format, "")
         }
     }
 
@@ -101,13 +101,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         luckyCartSDK?.setActionListener(this)
         if (pageType == BANNER_HOMEPAGE)
             Prefs(mContext).banners.homepage?.forEach {
-                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it,shopID)
+                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it, shopID)
             }
         else {
             Prefs(mContext).banners.categories?.forEach {
                 if (it.contains(shopID)) luckyCartSDK?.getBannerDetails(
                     BANNER_CATEGORIES,
-                    it,shopID
+                    it, shopID
                 )
             }
         }

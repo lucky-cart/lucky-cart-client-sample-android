@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.luckycart.samplesdk.R
-import com.luckycart.samplesdk.ui.game.GameFragment
+import com.luckycart.samplesdk.ui.game.GamesFragment
 import com.luckycart.samplesdk.ui.home.HomeFragment
 import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun showFragmentGame(gameImg: ArrayList<String>?, gameUrl: ArrayList<String>?) {
-        val fragment = GameFragment()
+        val fragment = GamesFragment()
         val args = Bundle()
         args.putStringArrayList(INTENT_FRAGMENT_GAME_IMG, gameImg)
         args.putStringArrayList(INTENT_FRAGMENT_GAME_URL, gameUrl)

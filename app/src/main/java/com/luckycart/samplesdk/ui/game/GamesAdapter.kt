@@ -13,8 +13,8 @@ import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_GAME_URL
 import kotlinx.android.synthetic.main.item_home.view.*
 
-class GameAdapter(var context: Context, private var listGame: ArrayList<Game>) :
-    RecyclerView.Adapter<GameAdapter.ViewHolder>() {
+class GamesAdapter(var context: Context, private var listGame: ArrayList<Game>) :
+    RecyclerView.Adapter<GamesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false))

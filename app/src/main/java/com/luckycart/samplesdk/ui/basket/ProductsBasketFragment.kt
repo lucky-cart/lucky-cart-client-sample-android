@@ -1,4 +1,4 @@
-package com.luckycart.samplesdk.ui.cart
+package com.luckycart.samplesdk.ui.basket
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,29 +16,29 @@ import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.utils.CART_ID
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CART
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CART_TTC
-import kotlinx.android.synthetic.main.fragment_card.*
+import kotlinx.android.synthetic.main.fragment_products_basket.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CartFragment : Fragment() {
+class ProductsBasketFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
-    private var listProduct = ArrayList<Product>()
-    private var productPrice: Float = 0.0f
+    private var listProducts = ArrayList<Product>()
+    private var totalPrice: Float = 0.0f
     private var productsName = ArrayList<String>()
-    private val listProductAddedToCard = ArrayList<Transaction>()
+    private val listProductsBasket = ArrayList<Transaction>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_card, container, false)
+        return inflater.inflate(R.layout.fragment_products_basket, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
         arguments?.getStringArrayList(INTENT_FRAGMENT_CART)?.let { productsName.addAll(it) }
-        productPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC) ?: 0F
+        totalPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC) ?: 0F
         initView()
         initClickListener()
     }
@@ -52,7 +52,7 @@ class CartFragment : Fragment() {
         val products = JsonArray()
         val cart = JsonObject()
         val cartId = CART_ID + Random().nextInt(9999999)
-        listProductAddedToCard.toSet().toList().forEach {
+        listProductsBasket.toSet().toList().forEach {
             val product = JsonObject()
             product.addProperty("productId", it.product.name)
             product.addProperty("ttc", it.product.price.toString())
@@ -60,7 +60,7 @@ class CartFragment : Fragment() {
             products.add(product)
         }
         cart.addProperty("cartId", cartId)
-        cart.addProperty("ttc", productPrice)
+        cart.addProperty("ttc", totalPrice)
         cart.add("products", products)
         btnCheckOut.setOnClickListener {
             mainViewModel.sendCart(cart)
@@ -68,11 +68,11 @@ class CartFragment : Fragment() {
     }
 
     private fun initView() {
-        listProduct.addAll(mainViewModel.updateAllProduct())
+        listProducts.addAll(mainViewModel.updateAllProduct())
         productsName.forEach { name ->
-            listProduct.forEach { product ->
+            listProducts.forEach { product ->
                 if (product.name == name) {
-                    listProductAddedToCard.add(
+                    listProductsBasket.add(
                         Transaction(
                             product,
                             productsName.count { it == product.name })
@@ -82,9 +82,9 @@ class CartFragment : Fragment() {
         }
         rvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvProduct.adapter =
-            context?.let { CartAdapter(it, listProductAddedToCard.toSet().toList()) }
+            context?.let { ProductsBasketAdapter(it, listProductsBasket.toSet().toList()) }
         txtProduct.text = getString(R.string.product, productsName.size.toString())
-        txtPrice.text = getString(R.string.price, productPrice.toString())
-        txtTTc.text = getString(R.string.price, productPrice.toString())
+        txtPrice.text = getString(R.string.price, totalPrice.toString())
+        txtTTc.text = getString(R.string.price, totalPrice.toString())
     }
 }

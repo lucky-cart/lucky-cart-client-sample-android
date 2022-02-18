@@ -1,4 +1,4 @@
-package com.luckycart.samplesdk.ui.cart
+package com.luckycart.samplesdk.ui.basket
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Transaction
-import kotlinx.android.synthetic.main.item_card.view.*
+import kotlinx.android.synthetic.main.item_product_basket.view.*
 
-class CartAdapter(var context: Context, private var listProduct: List<Transaction>) :
-    RecyclerView.Adapter<CartAdapter.ViewHolder>() {
+class ProductsBasketAdapter(var context: Context, private var listProduct: List<Transaction>) :
+    RecyclerView.Adapter<ProductsBasketAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_product_basket, parent, false)
         )
     }
 
