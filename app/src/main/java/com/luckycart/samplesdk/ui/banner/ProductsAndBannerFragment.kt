@@ -49,9 +49,7 @@ class ProductsAndBannerFragment : Fragment() {
         shopId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
         listProducts.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
-        if (listProductsBasket != null) {
-            productsBasket = listProductsBasket!!.size
-        }
+        productsBasket = listProductsBasket.size
         initView()
         initClickListener()
         val listBanner = ArrayList<BannerDetails>()
@@ -78,7 +76,7 @@ class ProductsAndBannerFragment : Fragment() {
                             txtPrice.text = getString(R.string.price, totalPrice.toString())
                             txtProduct.text =
                                 getString(R.string.product, productsBasket.toString())
-                            listProductsBasket?.add(product)
+                            listProductsBasket.add(product)
                         }
 
                     }
@@ -144,7 +142,6 @@ class ProductsAndBannerFragment : Fragment() {
     }
 
     private fun initClickListener() {
-        Log.d("listProductBasket", "" + listProductsBasket)
         btnShop.setOnClickListener {
             (context as MainActivity).showFragment(
                 ShoppingFragment(),

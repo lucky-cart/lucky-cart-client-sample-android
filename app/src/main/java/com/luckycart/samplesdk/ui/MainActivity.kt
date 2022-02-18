@@ -1,7 +1,6 @@
 package com.luckycart.samplesdk.ui
 
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
