@@ -1,10 +1,12 @@
 package com.luckycart.samplesdk.ui
 
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.luckycart.samplesdk.R
+import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.ui.game.GamesFragment
 import com.luckycart.samplesdk.ui.home.HomeFragment
 import com.luckycart.samplesdk.utils.*
@@ -34,11 +36,11 @@ class MainActivity : AppCompatActivity() {
         fragment: Fragment,
         shopID: String?,
         shopType: String?,
-        product: ArrayList<String>?,
+        products: ArrayList<Product>?,
         ttc: Float?
     ) {
         val args = Bundle()
-        args.putStringArrayList(INTENT_FRAGMENT_CART, product)
+        args.putParcelableArrayList(INTENT_FRAGMENT_CART, products)
         ttc?.let { args.putFloat(INTENT_FRAGMENT_CART_TTC, it) }
         args.putString(INTENT_FRAGMENT_SHOP_ID, shopID)
         args.putString(INTENT_FRAGMENT_SHOP_TYPE, shopType)

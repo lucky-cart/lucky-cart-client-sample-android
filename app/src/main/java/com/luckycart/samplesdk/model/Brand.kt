@@ -1,3 +1,7 @@
 package com.luckycart.samplesdk.model
 
-data class Brand(val name: String, val identifier: String)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class Brand(val name: String, val identifier: String) : Parcelable

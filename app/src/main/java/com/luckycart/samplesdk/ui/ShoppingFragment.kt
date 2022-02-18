@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.luckycart.samplesdk.R
+import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.fragment_shopping.*
@@ -20,14 +21,14 @@ class ShoppingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val productsName = arguments?.getStringArrayList(INTENT_FRAGMENT_CART)
+        val productsBasket = arguments?.getParcelableArrayList<Product>(INTENT_FRAGMENT_CART)
         val productPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
         imgCoffee.setOnClickListener {
             (context as MainActivity).showFragment(
                 ProductsAndBannerFragment(),
                 CATEGORY_COFFEE_ID,
                 BANNER_CATEGORIES,
-                productsName,
+                productsBasket,
                 productPrice
             )
         }
@@ -36,7 +37,7 @@ class ShoppingFragment : Fragment() {
                 ProductsAndBannerFragment(),
                 CATEGORY_FRUITS_ID,
                 BANNER_CATEGORIES,
-                productsName,
+                productsBasket,
                 productPrice
             )
         }

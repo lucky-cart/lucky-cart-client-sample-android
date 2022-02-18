@@ -24,10 +24,10 @@ class ProductsAndBannerFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private var pageType = ""
     private var shopId = ""
-    private var listProduct = ArrayList<Product>()
-    private var priceProduct: Float = 0.0F
+    private var listProducts = ArrayList<Product>()
+    private var totalPrice: Float? = 0.0F
     private var productsBasket: Int = 0
-    private var listShopping = ArrayList<String>()
+    private var listProductsBasket = ArrayList<Product>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,17 +40,17 @@ class ProductsAndBannerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
-        val shopProductName = arguments?.getStringArrayList(INTENT_FRAGMENT_CART)
-        val shopProductPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
+        arguments?.getParcelableArrayList<Product>(INTENT_FRAGMENT_CART)?.let {
+            listProductsBasket.addAll(
+                it
+            )
+        }
+        totalPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
         shopId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
-        listProduct.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
-        if (shopProductName != null) {
-            productsBasket = shopProductName.size
-            listShopping.addAll(shopProductName)
-        }
-        if (shopProductPrice != null) {
-            priceProduct = shopProductPrice
+        listProducts.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
+        if (listProductsBasket != null) {
+            productsBasket = listProductsBasket!!.size
         }
         initView()
         initClickListener()
@@ -64,7 +64,7 @@ class ProductsAndBannerFragment : Fragment() {
                             ProductsAndBannerAdapter(
                                 it,
                                 pageType,
-                                listProduct,
+                                listProducts,
                                 listBanner
                             )
                         }
@@ -73,12 +73,12 @@ class ProductsAndBannerFragment : Fragment() {
                     recycleBanner.adapter = adapter
                     adapter?.listener = object : ProductsAndBannerAdapter.AddProductToBasket {
                         override fun onItemChoose(product: Product) {
-                            priceProduct += product.price
+                            totalPrice = totalPrice?.plus(product.price)
                             productsBasket += 1
-                            txtPrice.text = getString(R.string.price, priceProduct.toString())
+                            txtPrice.text = getString(R.string.price, totalPrice.toString())
                             txtProduct.text =
                                 getString(R.string.product, productsBasket.toString())
-                            listShopping.add(product.name)
+                            listProductsBasket?.add(product)
                         }
 
                     }
@@ -128,39 +128,42 @@ class ProductsAndBannerFragment : Fragment() {
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
             }
         }
-        val adapter = context?.let { ProductsAndBannerAdapter(it, pageType, listProduct, null) }
+        val adapter = context?.let { ProductsAndBannerAdapter(it, pageType, listProducts, null) }
         recycleBanner.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycleBanner.adapter = adapter
         adapter?.listener = object : ProductsAndBannerAdapter.AddProductToBasket {
             override fun onItemChoose(product: Product) {
-                priceProduct += product.price
+                totalPrice = totalPrice?.plus(product.price)
                 productsBasket += 1
-                txtPrice.text = getString(R.string.price, priceProduct.toString())
+                txtPrice.text = getString(R.string.price, totalPrice.toString())
                 txtProduct.text = getString(R.string.product, productsBasket.toString())
-                listShopping.add(product.name)
+                listProductsBasket.add(product)
             }
         }
     }
 
     private fun initClickListener() {
+        Log.d("listProductBasket", "" + listProductsBasket)
         btnShop.setOnClickListener {
             (context as MainActivity).showFragment(
                 ShoppingFragment(),
                 null,
                 null,
-                listShopping,
-                priceProduct
+                listProductsBasket,
+                totalPrice
             )
+
         }
         btnCheckOut.setOnClickListener {
             (context as MainActivity).showFragment(
                 ProductsBasketFragment(),
                 null,
                 null,
-                listShopping,
-                priceProduct
+                listProductsBasket,
+                totalPrice
             )
+
         }
     }
 }

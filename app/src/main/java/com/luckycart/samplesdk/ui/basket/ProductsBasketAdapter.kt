@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.luckycart.samplesdk.R
-import com.luckycart.samplesdk.model.Transaction
+import com.luckycart.samplesdk.model.Basket
 import kotlinx.android.synthetic.main.item_product_basket.view.*
 
-class ProductsBasketAdapter(var context: Context, private var listProduct: List<Transaction>) :
+class ProductsBasketAdapter(var context: Context, private var listProduct: List<Basket>) :
     RecyclerView.Adapter<ProductsBasketAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +28,7 @@ class ProductsBasketAdapter(var context: Context, private var listProduct: List<
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindViewProduct(item: Transaction) {
+        fun bindViewProduct(item: Basket) {
             itemView.txtName.text = item.product.name
             itemView.txtPrice.text =
                 context.getString(R.string.price, item.product.price.toString())

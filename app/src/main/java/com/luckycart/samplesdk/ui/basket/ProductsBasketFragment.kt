@@ -11,7 +11,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
-import com.luckycart.samplesdk.model.Transaction
+import com.luckycart.samplesdk.model.Basket
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.utils.CART_ID
 import com.luckycart.samplesdk.utils.INTENT_FRAGMENT_CART
@@ -23,10 +23,9 @@ import kotlin.collections.ArrayList
 class ProductsBasketFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
-    private var listProducts = ArrayList<Product>()
     private var totalPrice: Float = 0.0f
-    private var productsName = ArrayList<String>()
-    private val listProductsBasket = ArrayList<Transaction>()
+    private var productsShooping = ArrayList<Product>()
+    private val listProductsBasket = ArrayList<Basket>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -37,7 +36,8 @@ class ProductsBasketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
-        arguments?.getStringArrayList(INTENT_FRAGMENT_CART)?.let { productsName.addAll(it) }
+        arguments?.getParcelableArrayList<Product>(INTENT_FRAGMENT_CART)
+            ?.let { productsShooping.addAll(it) }
         totalPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC) ?: 0F
         initView()
         initClickListener()
@@ -68,22 +68,18 @@ class ProductsBasketFragment : Fragment() {
     }
 
     private fun initView() {
-        listProducts.addAll(mainViewModel.updateAllProduct())
-        productsName.forEach { name ->
-            listProducts.forEach { product ->
-                if (product.name == name) {
-                    listProductsBasket.add(
-                        Transaction(
-                            product,
-                            productsName.count { it == product.name })
-                    )
-                }
-            }
+        productsShooping.forEach { it ->
+            listProductsBasket.add(
+                Basket(
+                    it,
+                    Collections.frequency(productsShooping, it)
+                )
+            )
         }
         rvProduct.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rvProduct.adapter =
             context?.let { ProductsBasketAdapter(it, listProductsBasket.toSet().toList()) }
-        txtProduct.text = getString(R.string.product, productsName.size.toString())
+        txtProduct.text = getString(R.string.product, productsShooping.size.toString())
         txtPrice.text = getString(R.string.price, totalPrice.toString())
         txtTTc.text = getString(R.string.price, totalPrice.toString())
     }

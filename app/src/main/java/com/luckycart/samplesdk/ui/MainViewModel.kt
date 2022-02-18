@@ -137,12 +137,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         return listProduct
     }
 
-    fun updateAllProduct(): ArrayList<Product> {
-        val listProduct = ArrayList<Product>()
-        listProduct.addAll(FakeData.coffees.products)
-        listProduct.addAll(FakeData.fruits.products)
-        return listProduct
-    }
 
     fun sendCart(cart: JsonObject) {
         if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
