@@ -10,5 +10,5 @@ dependencyResolutionManagement {
 rootProject.name = "lucky-cart-client-sample-android"
 include ':app'
 
-//include ':lucky-cart-sdk'
-//project(':lucky-cart-sdk').projectDir = new File(settingsDir, '../lucky-cart-android/sdk')
+include ':lucky-cart-sdk'
+project(':lucky-cart-sdk').projectDir = new File(settingsDir, '../lucky-cart-android/sdk')

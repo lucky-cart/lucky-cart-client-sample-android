@@ -23,7 +23,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     var getBannerCategoryDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     private var getBannerCategory: Boolean = false
     private var shopID: String = ""
-    private var cardID: String = ""
+    private var cartID: String = ""
     private var retryGetGame = 0
 
     fun initLuckyCart() {
@@ -50,8 +50,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         }
     }
 
-    override fun sendCard(transactionResponse: TransactionResponse) {
-        luckyCartSDK?.getGame(cardID)
+    override fun sendCart(transactionResponse: TransactionResponse) {
+        luckyCartSDK?.getGame(cartID)
     }
 
     override fun getGame(game: GameResponse) {
@@ -75,8 +75,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     private fun loadBannerHomePage() {
         getBannerCategory = false
-        availableBanners.homepage?.forEach { homePage ->
-            luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, homePage)
+        availableBanners.homepage?.forEach { format ->
+            luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, format,"")
         }
     }
 
@@ -88,7 +88,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         Prefs(mContext).banners.categories?.forEach {
             if (it.contains(shopID) && !it.contains("search")) luckyCartSDK?.getBannerDetails(
                 BANNER_CATEGORIES,
-                it
+                it,
+                ""
             )
         }
     }
@@ -100,13 +101,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         luckyCartSDK?.setActionListener(this)
         if (pageType == BANNER_HOMEPAGE)
             Prefs(mContext).banners.homepage?.forEach {
-                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it + "_$shopID")
+                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it,shopID)
             }
         else {
             Prefs(mContext).banners.categories?.forEach {
                 if (it.contains(shopID)) luckyCartSDK?.getBannerDetails(
                     BANNER_CATEGORIES,
-                    it + "_$shopID"
+                    it,shopID
                 )
             }
         }
@@ -143,10 +144,10 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         return listProduct
     }
 
-    fun sendCard(card: JsonObject) {
+    fun sendCart(cart: JsonObject) {
         if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
-        cardID = card.get("cartId").asString
-        luckyCartSDK?.sendCard(card)
+        cartID = cart.get("cartId").asString
+        luckyCartSDK?.sendCart(cart)
     }
 }

@@ -20,8 +20,8 @@ class ShoppingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val productsName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
-        val productPrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
+        val productsName = arguments?.getStringArrayList(INTENT_FRAGMENT_CART)
+        val productPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
         imgCoffee.setOnClickListener {
             (context as MainActivity).showFragment(ProductsAndBannerFragment(), CATEGORY_COFFEE_ID, BANNER_CATEGORIES, productsName, productPrice)
         }

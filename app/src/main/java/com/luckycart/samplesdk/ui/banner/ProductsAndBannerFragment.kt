@@ -16,7 +16,7 @@ import com.luckycart.samplesdk.ui.GetBannerState
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.ui.ShoppingFragment
-import com.luckycart.samplesdk.ui.card.CardFragment
+import com.luckycart.samplesdk.ui.cart.CartFragment
 import com.luckycart.samplesdk.utils.*
 import kotlinx.android.synthetic.main.fragment_banner.*
 
@@ -40,8 +40,8 @@ class ProductsAndBannerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
-        val shopProductName = arguments?.getStringArrayList(INTENT_FRAGMENT_CARD)
-        val shopProductPrice = arguments?.getFloat(INTENT_FRAGMENT_CARD_TTC)
+        val shopProductName = arguments?.getStringArrayList(INTENT_FRAGMENT_CART)
+        val shopProductPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
         shopId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
         listProduct.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
@@ -71,7 +71,7 @@ class ProductsAndBannerFragment : Fragment() {
                     recycleBanner.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     recycleBanner.adapter = adapter
-                    adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCard {
+                    adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCart {
                         override fun onItemChoose(product: Product) {
                             priceProduct += product.price
                             productAddedToCard += 1
@@ -133,7 +133,7 @@ class ProductsAndBannerFragment : Fragment() {
         recycleBanner.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycleBanner.adapter = adapter
-        adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCard {
+        adapter?.listener = object : ProductsAndBannerAdapter.AddProductToCart {
             override fun onItemChoose(product: Product) {
                 priceProduct += product.price
                 productAddedToCard += 1
@@ -149,7 +149,7 @@ class ProductsAndBannerFragment : Fragment() {
             (context as MainActivity).showFragment(ShoppingFragment(), null, null, listShopping, priceProduct)
         }
         btnCheckOut.setOnClickListener {
-            (context as MainActivity).showFragment(CardFragment(), null, null, listShopping, priceProduct)
+            (context as MainActivity).showFragment(CartFragment(), null, null, listShopping, priceProduct)
         }
     }
 }

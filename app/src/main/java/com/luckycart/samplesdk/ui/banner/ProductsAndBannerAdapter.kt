@@ -22,7 +22,7 @@ class ProductsAndBannerAdapter(
     private var listBanner: ArrayList<BannerDetails>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
-    var listener: AddProductToCard? = null
+    var listener: AddProductToCart? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 0) ProductViewModel(
@@ -95,7 +95,7 @@ class ProductsAndBannerAdapter(
         else if (viewHolder is BannerViewModel) listBanner?.get(position - listProduct.size)?.let { viewHolder.bindViewBanner(it) }
     }
 
-    interface AddProductToCard {
+    interface AddProductToCart {
         fun onItemChoose(product: Product)
     }
 }
