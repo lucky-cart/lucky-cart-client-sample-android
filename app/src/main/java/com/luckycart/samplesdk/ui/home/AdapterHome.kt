@@ -5,19 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import com.luckycart.samplesdk.utils.BANNER_HOMEPAGE
-import kotlinx.android.synthetic.main.item_home.view.*
+import kotlinx.android.synthetic.main.item_banner_sample.view.*
 
 class AdapterHome(var context: Context, private var listBanner: ArrayList<BannerDetails>) :
     RecyclerView.Adapter<AdapterHome.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_home, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_banner_sample, parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,11 +30,10 @@ class AdapterHome(var context: Context, private var listBanner: ArrayList<Banner
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindViewBanner(item: BannerDetails) {
-            Glide.with(context).load(item.image_url).into(itemView.imgBanner)
-            itemView.imgBanner.setOnClickListener {
-                if (item.action?.type.isNullOrEmpty()) (context as MainActivity).showFragment(WebViewFragment(), null, item.redirect_url, null, null)
-                else (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.action?.ref, BANNER_HOMEPAGE, null, null)
+            val clickListner = View.OnClickListener {
+                (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.action?.ref, BANNER_HOMEPAGE, null, null)
             }
+            itemView.bannerView.setBannerParams(item, clickListner)
         }
     }
 }
