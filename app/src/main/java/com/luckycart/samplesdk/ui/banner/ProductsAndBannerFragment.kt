@@ -92,7 +92,7 @@ class ProductsAndBannerFragment : Fragment() {
     private fun setUpViewModel() {
         mainViewModel =
             ViewModelProviders.of(this).get(MainViewModel::class.java)
-        context?.let { mainViewModel.getContext(it) }
+        context?.let { mainViewModel.setContext(it) }
     }
 
     private fun initView() {

@@ -3,7 +3,7 @@ package com.luckycart.samplesdk.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import com.luckycart.model.Game
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.ui.game.GamesFragment
@@ -14,21 +14,12 @@ import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         txtCustomer.text = getString(R.string.customer, CUSTOMER_ID)
-        setUpViewModel()
         showFragment(HomeFragment(), null, null, null, null)
-
-
-    }
-
-    private fun setUpViewModel() {
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        mainViewModel.getContext(this)
     }
 
     fun showFragment(
@@ -48,11 +39,17 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(fragment.javaClass.name).commit()
     }
 
-    fun showFragmentGame(gameImg: ArrayList<String>?, gameUrl: ArrayList<String>?) {
+    fun showFragmentGame(games: ArrayList<Game>?) {
+        val listGame = ArrayList<String>()
+        val listUrlGame = ArrayList<String>()
+        games?.forEach { item ->
+            item.mobileGameImage?.let { listGame.add(it) }
+            item.mobileGameUrl?.let { listUrlGame.add(it) }
+        }
         val fragment = GamesFragment()
         val args = Bundle()
-        args.putStringArrayList(INTENT_FRAGMENT_GAME_IMG, gameImg)
-        args.putStringArrayList(INTENT_FRAGMENT_GAME_URL, gameUrl)
+        args.putStringArrayList(INTENT_FRAGMENT_GAME_IMG, listGame)
+        args.putStringArrayList(INTENT_FRAGMENT_GAME_URL, listUrlGame)
         fragment.arguments = args
         supportFragmentManager.beginTransaction().add(R.id.fragment, fragment)
             .addToBackStack(fragment.javaClass.name).commit()

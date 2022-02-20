@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.JsonObject
 import com.luckycart.local.Prefs
 import com.luckycart.model.*
+import com.luckycart.samplesdk.ApplicationSampleLuckyCart
 import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
@@ -17,76 +18,59 @@ import kotlin.collections.ArrayList
 class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     private lateinit var mContext: Context
-    private var luckyCartSDK: LuckCartSDK? = null
-    private lateinit var availableBanners: Banners
+    var luckyCartSDK: LuckCartSDK? = null
     var getBannerDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var getBannerCategoryDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     private var getBannerCategory: Boolean = false
-    private var shopID: String = ""
     private var cartID: String = ""
-    private var retryGetGame = 0
 
-    fun initLuckyCart() {
-        val auth = LCAuthorization(AUTH_KEY, "")
-        luckyCartSDK = LuckCartSDK(mContext)
-        luckyCartSDK?.init(auth, null)
-        luckyCartSDK?.setUser(CUSTOMER_ID)
-        luckyCartSDK?.setActionListener(this)
-        luckyCartSDK?.listAvailableBanners()
+    fun setContext(context: Context) {
+        mContext = context
+        luckyCartSDK = (mContext.applicationContext as ApplicationSampleLuckyCart).luckyCartSDK
     }
 
-    override fun listAvailableBanners(banners: Banners) {
-        availableBanners = banners
+    fun initLuckyCart() {
+        luckyCartSDK?.setActionListener(this)
+    }
+
+    override fun onRecieveListAvailableBanners(banners: Banners) {
         loadBannerHomePage()
     }
 
-    override fun getBannerDetails(banners: BannerDetails) {
-        if (banners.name != null) {
+    override fun onRecieveBannerDetails(bannerDetails: BannerDetails) {
+        if (bannerDetails.name != null) {
             if (getBannerCategory) {
-                getBannerCategoryDetails.value = GetBannerState.OnSuccess(banners)
-            } else getBannerDetails.value = GetBannerState.OnSuccess(banners)
+                getBannerCategoryDetails.value = GetBannerState.OnSuccess(bannerDetails)
+            } else getBannerDetails.value = GetBannerState.OnSuccess(bannerDetails)
         } else {
             getBannerCategoryDetails.value = GetBannerState.OnError("error")
         }
     }
 
-    override fun sendCart(transactionResponse: TransactionResponse) {
+    override fun onRecieveSendCartTransactionResponse(transactionResponse: TransactionResponse) {
         luckyCartSDK?.getGame(cartID)
     }
 
-    override fun getGame(game: GameResponse) {
-        val listGame = ArrayList<String>()
-        val listUrlGame = ArrayList<String>()
-        game.games?.forEach { item ->
-            item.mobileGameImage?.let { listGame.add(it) }
-            item.mobileGameUrl?.let { listUrlGame.add(it) }
-        }
-        (mContext as MainActivity).showFragmentGame(
-            listGame, listUrlGame
-        )
+    override fun onRecieveListGames(gameResponse: GameResponse) {
+        (mContext as MainActivity).showFragmentGame(gameResponse.games)
     }
 
     override fun onError(error: String?) {
-        retryGetGame += 1
-        if (retryGetGame == 10)
-            Toast.makeText(mContext, "Error: $error", Toast.LENGTH_SHORT).show()
-
+        Toast.makeText(mContext, "Error: $error", Toast.LENGTH_SHORT).show()
     }
 
-    private fun loadBannerHomePage() {
+    fun loadBannerHomePage() {
         getBannerCategory = false
-        availableBanners.homepage?.forEach { format ->
+        Prefs(mContext).banners.homepage?.forEach { format ->
             luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, format, "")
         }
     }
 
     fun loadBannerCategory(pageId: String) {
-        shopID = pageId
         getBannerCategory = true
-        if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         Prefs(mContext).banners.categories?.forEach {
-            if (it.contains(shopID) && !it.contains("search")) luckyCartSDK?.getBannerDetails(
+            if (it.contains(pageId) && !it.contains("search")) luckyCartSDK?.getBannerDetails(
                 BANNER_CATEGORIES,
                 it,
                 ""
@@ -95,26 +79,20 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     fun loadShopBanner(pageId: String, pageType: String) {
-        shopID = pageId
         getBannerCategory = true
-        if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         if (pageType == BANNER_HOMEPAGE)
             Prefs(mContext).banners.homepage?.forEach {
-                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it, shopID)
+                luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it, pageId)
             }
         else {
             Prefs(mContext).banners.categories?.forEach {
-                if (it.contains(shopID)) luckyCartSDK?.getBannerDetails(
+                if (it.contains(pageId)) luckyCartSDK?.getBannerDetails(
                     BANNER_CATEGORIES,
-                    it, shopID
+                    it, pageId
                 )
             }
         }
-    }
-
-    fun getContext(context: Context) {
-        mContext = context
     }
 
     fun updateProductOfShopId(shopId: String, pageType: String?): ArrayList<Product> {
@@ -137,9 +115,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         return listProduct
     }
 
-
     fun sendCart(cart: JsonObject) {
-        if (luckyCartSDK == null) luckyCartSDK = LuckCartSDK(mContext)
         luckyCartSDK?.setActionListener(this)
         cartID = cart.get("cartId").asString
         luckyCartSDK?.sendCart(cart)
