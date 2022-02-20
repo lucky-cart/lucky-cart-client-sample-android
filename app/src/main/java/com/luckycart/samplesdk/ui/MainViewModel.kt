@@ -27,9 +27,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun setContext(context: Context) {
         mContext = context
         luckyCartSDK = (mContext.applicationContext as ApplicationSampleLuckyCart).luckyCartSDK
-    }
-
-    fun initLuckyCart() {
         luckyCartSDK?.setActionListener(this)
     }
 
@@ -59,17 +56,16 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         Toast.makeText(mContext, "Error: $error", Toast.LENGTH_SHORT).show()
     }
 
-    fun loadBannerHomePage() {
+    private fun loadBannerHomePage() {
         getBannerCategory = false
-        Prefs(mContext).banners.homepage?.forEach { format ->
+        Prefs(mContext).banners?.homepage?.forEach { format ->
             luckyCartSDK?.getBannerDetails(BANNER_HOMEPAGE, format, "")
         }
     }
 
     fun loadBannerCategory(pageId: String) {
         getBannerCategory = true
-        luckyCartSDK?.setActionListener(this)
-        Prefs(mContext).banners.categories?.forEach {
+        Prefs(mContext).banners?.categories?.forEach {
             if (it.contains(pageId) && !it.contains("search")) luckyCartSDK?.getBannerDetails(
                 BANNER_CATEGORIES,
                 it,
@@ -80,13 +76,12 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     fun loadShopBanner(pageId: String, pageType: String) {
         getBannerCategory = true
-        luckyCartSDK?.setActionListener(this)
         if (pageType == BANNER_HOMEPAGE)
-            Prefs(mContext).banners.homepage?.forEach {
+            Prefs(mContext).banners?.homepage?.forEach {
                 luckyCartSDK?.getBannerDetails(BANNER_CATEGORIES, it, pageId)
             }
         else {
-            Prefs(mContext).banners.categories?.forEach {
+            Prefs(mContext).banners?.categories?.forEach {
                 if (it.contains(pageId)) luckyCartSDK?.getBannerDetails(
                     BANNER_CATEGORIES,
                     it, pageId
@@ -116,7 +111,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     fun sendCart(cart: JsonObject) {
-        luckyCartSDK?.setActionListener(this)
         cartID = cart.get("cartId").asString
         luckyCartSDK?.sendCart(cart)
     }
