@@ -35,7 +35,7 @@ android {
 
 dependencies {
 
-    implementation project(':lucky-cart-sdk')
+    //implementation project(':lucky-cart-sdk')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.8'
 
     //luckCart
-   // implementation 'com.github.lucky-cart:lucky-cart-android:1.0.0'
+    implementation 'com.github.lucky-cart:lucky-cart-android:1.0.3'
 
 
 }
