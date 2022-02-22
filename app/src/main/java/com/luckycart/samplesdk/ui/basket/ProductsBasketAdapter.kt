@@ -1,4 +1,4 @@
-package com.luckycart.samplesdk.ui.card
+package com.luckycart.samplesdk.ui.basket
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.luckycart.samplesdk.R
-import com.luckycart.samplesdk.model.Transaction
-import kotlinx.android.synthetic.main.item_card.view.*
+import com.luckycart.samplesdk.model.Basket
+import kotlinx.android.synthetic.main.item_product_basket.view.*
 
-class CardAdapter(var context: Context, private var listProduct: List<Transaction>) :
-    RecyclerView.Adapter<CardAdapter.ViewHolder>() {
+class ProductsBasketAdapter(var context: Context, private var listProduct: List<Basket>) :
+    RecyclerView.Adapter<ProductsBasketAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_product_basket, parent, false)
         )
     }
 
@@ -28,7 +28,7 @@ class CardAdapter(var context: Context, private var listProduct: List<Transactio
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindViewProduct(item: Transaction) {
+        fun bindViewProduct(item: Basket) {
             itemView.txtName.text = item.product.name
             itemView.txtPrice.text =
                 context.getString(R.string.price, item.product.price.toString())

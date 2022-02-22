@@ -29,7 +29,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
-        mainViewModel.initLuckyCart()
         mainViewModel.getBannerDetails.observe(viewLifecycleOwner, { bannerState ->
             listBannerDetails = ArrayList()
             when (bannerState) {
@@ -51,6 +50,6 @@ class HomeFragment : Fragment() {
 
     private fun setUpViewModel() {
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        context?.let { mainViewModel.getContext(it) }
+        context?.let { mainViewModel.setContext(it) }
     }
 }
