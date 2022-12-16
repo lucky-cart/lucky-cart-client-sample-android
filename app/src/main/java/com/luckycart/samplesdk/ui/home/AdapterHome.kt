@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.luckycart.model.Banner
 import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
@@ -12,7 +13,7 @@ import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment
 import com.luckycart.samplesdk.utils.BANNER_HOMEPAGE
 import kotlinx.android.synthetic.main.item_banner_sample.view.*
 
-class AdapterHome(var context: Context, private var listBanner: ArrayList<BannerDetails>) :
+class AdapterHome(var context: Context, private var listBanner: ArrayList<Banner>,val  listener: (Banner) -> Unit) :
     RecyclerView.Adapter<AdapterHome.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,11 +30,11 @@ class AdapterHome(var context: Context, private var listBanner: ArrayList<Banner
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindViewBanner(item: BannerDetails) {
-            val clickListner = View.OnClickListener {
-                (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.action?.ref, BANNER_HOMEPAGE, null, null)
+        fun bindViewBanner(item: Banner) {
+            val clickListener = View.OnClickListener {
+                (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.operationId, BANNER_HOMEPAGE, null, null)
             }
-            itemView.bannerView.setBannerParams(item, clickListner)
+            itemView.bannerView.setBannerParams(item, clickListener, listener)
         }
     }
 }

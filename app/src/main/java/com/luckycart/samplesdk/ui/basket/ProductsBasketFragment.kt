@@ -49,21 +49,8 @@ class ProductsBasketFragment : Fragment() {
     }
 
     private fun initClickListener() {
-        val products = JsonArray()
-        val cart = JsonObject()
-        val cartId = CART_ID + Random().nextInt(9999999)
-        listProductsBasket.toSet().toList().forEach {
-            val product = JsonObject()
-            product.addProperty("productId", it.product.name)
-            product.addProperty("ttc", it.product.price.toString())
-            product.addProperty("quantity", it.numberOfProduct.toString())
-            products.add(product)
-        }
-        cart.addProperty("cartId", cartId)
-        cart.addProperty("ttc", totalPrice)
-        cart.add("products", products)
         btnCheckOut.setOnClickListener {
-            mainViewModel.sendCart(cart)
+            mainViewModel.sendShopperEvent()
         }
     }
 

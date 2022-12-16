@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.luckycart.model.Game
+import com.luckycart.model.GameExperience
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.ui.game.GamesFragment
@@ -39,12 +40,12 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(fragment.javaClass.name).commit()
     }
 
-    fun showFragmentGame(games: ArrayList<Game>?) {
+    fun showFragmentGame(gameList: List<GameExperience>?) {
         val listGame = ArrayList<String>()
         val listUrlGame = ArrayList<String>()
-        games?.forEach { item ->
-            item.mobileGameImage?.let { listGame.add(it) }
-            item.mobileGameUrl?.let { listUrlGame.add(it) }
+        gameList?.forEach { item ->
+            item.images.mobileUrl?.let { listGame.add(it) }
+            item.experienceUrl?.let { listUrlGame.add(it) }
         }
         val fragment = GamesFragment()
         val args = Bundle()
