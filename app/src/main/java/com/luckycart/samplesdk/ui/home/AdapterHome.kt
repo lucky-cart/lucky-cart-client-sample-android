@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.luckycart.model.Banner
-import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.banner.ProductsAndBannerFragment

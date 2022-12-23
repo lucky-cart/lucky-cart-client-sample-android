@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.luckycart.model.Banner
-import com.luckycart.model.BannerDetails
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.*
 import com.luckycart.samplesdk.ui.GetBannerState
@@ -58,6 +57,8 @@ class ProductsAndBannerFragment : Fragment() {
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
                     listBanner.add(bannerState.banner)
+
+                    mainViewModel.bannerDisplayed()
                     val adapter =  ProductsAndBannerAdapter(requireActivity(), listProducts, listBanner){
                         mainViewModel.bannerClicked(it)
                     }

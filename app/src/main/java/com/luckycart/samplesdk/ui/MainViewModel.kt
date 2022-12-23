@@ -1,11 +1,9 @@
 package com.luckycart.samplesdk.ui
 
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.JsonObject
 import com.luckycart.local.Prefs
 import com.luckycart.model.*
 import com.luckycart.retrofit.BannerExperienceState
@@ -15,6 +13,7 @@ import com.luckycart.model.Product as SDKProduct
 import com.luckycart.samplesdk.utils.*
 import com.luckycart.sdk.LuckCartSDK
 import com.luckycart.sdk.LuckyCartListenerCallback
+import java.util.Date
 import kotlin.collections.ArrayList
 
 class MainViewModel : ViewModel(), LuckyCartListenerCallback {
@@ -53,8 +52,8 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     override fun onPostEvent(success: String?) {
         if(cardID == "cartValidated"){
             val filters = arrayListOf<Filter>()
-            filters.add(Filter(filterProperty = "cartId", "5000"))
-            luckyCartSDK?.getGamesAccess("site",1,GameFilter(requestFilter = filters))
+            filters.add(Filter(filterProperty = "cartId", "tom_221122_2250"))
+            luckyCartSDK?.getGamesAccess(siteKey = "A2ei4iyi", count = 1, filters = GameFilter(requestFilter = filters))
         }
     }
 
@@ -67,7 +66,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     fun loadBannerCategory(pageId: String) {
         getBannerCategory = true
-        luckyCartSDK?.getBannerExperienceDetail(BANNER_CATEGORIES, "banner", pageId)
+        luckyCartSDK?.getBannerExperienceDetail(page_type = BANNER_CATEGORIES, format = "banner", pageId = pageId)
     }
 
     fun loadShopBanner(pageId: String, pageType: String) {
@@ -104,25 +103,30 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         return listProduct
     }
 
-
     fun sendShopperEvent(){
         cardID = "cartValidated"
+        val timesTamp = (Date().time / 1000)
         val products = arrayListOf<SDKProduct>()
         products.add(SDKProduct("MPX_4123241", 11.13F, 11.13F, "1", null, brand = "corona"))
         products.add(SDKProduct("MPX_4798320", 11.13F, 11.13F, "1", null, brand = "corona"))
-        val eventPayload =EventPayload(5000,"EUR", "web-optin", products = products)
+        val eventPayload =EventPayload(cartId = timesTamp,"EUR", "web-optin", products = products)
 
-        luckyCartSDK?.sendShopperEvent("site", "cartValidated", eventPayload)
+        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "cartValidated", eventPayload)
     }
     fun bannerViewed(banner : Banner){
         cardID = ""
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
-        luckyCartSDK?.sendShopperEvent("site", "bannerViewed", eventPayload)
+        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "bannerViewed", eventPayload)
+    }
+    fun bannerDisplayed(){
+        cardID = ""
+        val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card")
+        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pagerView", eventPayload)
     }
     fun bannerClicked(banner : Banner){
         cardID = ""
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
-        luckyCartSDK?.sendShopperEvent("site", "bannerClicked", eventPayload)
+        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "bannerClicked", eventPayload)
     }
 }
 

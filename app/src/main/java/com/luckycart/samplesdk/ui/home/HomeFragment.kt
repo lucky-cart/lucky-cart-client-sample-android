@@ -1,28 +1,21 @@
 package com.luckycart.samplesdk.ui.home
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.luckycart.model.Banner
-import com.luckycart.model.BannerDetails
 import com.luckycart.retrofit.BannerExperienceState
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.extension.dpToPx
-import com.luckycart.samplesdk.ui.GetBannerState
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.ui.ShoppingFragment
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.lang.Math.abs
 
 class HomeFragment : Fragment() {
 
@@ -44,10 +37,9 @@ class HomeFragment : Fragment() {
                 is BannerExperienceState.OnSuccess -> {
                     val bannerList = arrayListOf<Banner>()
                     bannerList.addAll(bannerState.bannerList)
-                    //bannerList.add(bannerState.bannerList[0])
-                    //bannerList.add(bannerState.bannerList[0])
 
                     banner_view_pager.visibility = View.VISIBLE
+                    mainViewModel.bannerDisplayed()
 
                     val offsetPx = resources.getDimension(R.dimen.pager_padding).toInt().dpToPx(resources.displayMetrics)
                     banner_view_pager.setPadding(offsetPx, 0, offsetPx, 0)
