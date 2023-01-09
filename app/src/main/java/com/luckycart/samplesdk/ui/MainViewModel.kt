@@ -46,14 +46,14 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun onError(error: String?) {
-        getBannerDetails.value = GetBannerState.OnError("error")
+        getBannerDetails.postValue(GetBannerState.OnError("error"))
     }
 
     override fun onPostEvent(success: String?) {
         if(cardID == "cartValidated"){
             val filters = arrayListOf<Filter>()
-            filters.add(Filter(filterProperty = "cartId", "tom_221122_2250"))
-            luckyCartSDK?.getGamesAccess(siteKey = "A2ei4iyi", count = 1, filters = GameFilter(requestFilter = filters))
+            filters.add(Filter(filterProperty = "cartId", cartIDTesting))
+            luckyCartSDK?.getGamesAccess(siteKey = AUTH_KEY, count = 1, filters = GameFilter(filters = filters))
         }
     }
 
@@ -103,16 +103,38 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         return listProduct
     }
 
-    fun sendShopperEvent(){
+    var cartIDTesting =""
+    fun sendShopperEvent(productsShopping: ArrayList<Product>, totalPrice: Float){
         cardID = "cartValidated"
-        val timesTamp = (Date().time / 1000)
-        val products = arrayListOf<SDKProduct>()
-        products.add(SDKProduct("MPX_4123241", 11.13F, 11.13F, "1", null, brand = "corona"))
-        products.add(SDKProduct("MPX_4798320", 11.13F, 11.13F, "1", null, brand = "corona"))
-        val eventPayload =EventPayload(cartId = timesTamp,"EUR", "web-optin", products = products)
+        if(productsShopping.size >0) {
+            val timesTamp = (Date().time / 1000)
+            val products = arrayListOf<SDKProduct>()
+            cartIDTesting = "cart_$timesTamp"
+            productsShopping.forEach {customProduct ->
+                products.add(
+                    SDKProduct(
+                        productId = "${customProduct.identifier}",
+                        unitAtiAmount = customProduct.price,
+                        finalAtiAmount = customProduct.price,
+                        quantity = 1,
+                        brand = "${customProduct.brand?.name}"
+                    )
+                )
+            }
+            val eventPayload = EventPayload(
+                cartId = cartIDTesting,
+                currency = "EUR",
+                device = "mobile",
+                transactionDate = Date().toString(),
+                finalAtiAmount = totalPrice,
+                finalTfAmount = totalPrice,
+                products = products
+            )
 
-        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "cartValidated", eventPayload)
+            luckyCartSDK?.sendShopperEvent(AUTH_KEY, "cartValidated", eventPayload)
+        }
     }
+
     fun bannerViewed(banner : Banner){
         cardID = ""
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
@@ -121,7 +143,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun bannerDisplayed(){
         cardID = ""
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card")
-        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pagerView", eventPayload)
+        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pageView", eventPayload)
     }
     fun bannerClicked(banner : Banner){
         cardID = ""

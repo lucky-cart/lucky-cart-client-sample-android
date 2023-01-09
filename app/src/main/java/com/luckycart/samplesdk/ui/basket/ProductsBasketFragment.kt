@@ -50,7 +50,7 @@ class ProductsBasketFragment : Fragment() {
 
     private fun initClickListener() {
         btnCheckOut.setOnClickListener {
-            mainViewModel.sendShopperEvent()
+            mainViewModel.sendShopperEvent(productsShooping, totalPrice)
         }
     }
 
