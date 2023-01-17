@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.luckycart.model.BannerDetails
+import com.luckycart.model.Banner
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.*
 import com.luckycart.samplesdk.ui.GetBannerState
@@ -52,24 +52,20 @@ class ProductsAndBannerFragment : Fragment() {
         productsBasket = listProductsBasket.size
         initView()
         initClickListener()
-        val listBanner = ArrayList<BannerDetails>()
-        mainViewModel.getBannerCategoryDetails.observe(viewLifecycleOwner, { bannerState ->
+        val listBanner = ArrayList<Banner>()
+        mainViewModel.getBannerDetails.observe(viewLifecycleOwner) { bannerState ->
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
-                    listBanner.add(bannerState.response)
-                    val adapter =
-                        context?.let {
-                            ProductsAndBannerAdapter(
-                                it,
-                                pageType,
-                                listProducts,
-                                listBanner
-                            )
-                        }
-                    recycleBanner.layoutManager =
-                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    listBanner.add(bannerState.banner)
+                    if(listProducts.size >0)
+                        mainViewModel.pageDisplayed()
+                    val adapter =  ProductsAndBannerAdapter(requireActivity(), listProducts, listBanner){
+                        mainViewModel.bannerClicked(it)
+                    }
+
+                    recycleBanner.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     recycleBanner.adapter = adapter
-                    adapter?.listener = object : ProductsAndBannerAdapter.AddProductToBasket {
+                    adapter.addProductlistener = object : ProductsAndBannerAdapter.AddProductToBasket {
                         override fun onItemChoose(product: Product) {
                             totalPrice = totalPrice?.plus(product.price)
                             productsBasket += 1
@@ -78,20 +74,19 @@ class ProductsAndBannerFragment : Fragment() {
                                 getString(R.string.product, productsBasket.toString())
                             listProductsBasket.add(product)
                         }
-
                     }
                 }
+
                 is GetBannerState.OnError -> {
                     Log.d("Error", bannerState.error)
                 }
             }
 
-        })
+        }
     }
 
     private fun setUpViewModel() {
-        mainViewModel =
-            ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         context?.let { mainViewModel.setContext(it) }
     }
 
@@ -102,7 +97,10 @@ class ProductsAndBannerFragment : Fragment() {
             txtPrice.visibility = View.GONE
             txtProduct.visibility = View.GONE
             mainViewModel.loadShopBanner(shopId, pageType)
-        } else mainViewModel.loadBannerCategory(shopId)
+        } else {
+            mainViewModel.loadBannerCategory(shopId)
+        }
+
         when (pageType) {
             BANNER_CATEGORIES -> {
                 if (shopId == CATEGORY_COFFEE_ID) {
@@ -126,11 +124,13 @@ class ProductsAndBannerFragment : Fragment() {
                 context?.let { title.setTextColor(ContextCompat.getColor(it, R.color.blue1)) }
             }
         }
-        val adapter = context?.let { ProductsAndBannerAdapter(it, pageType, listProducts, null) }
-        recycleBanner.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        val adapter = ProductsAndBannerAdapter(requireActivity(), listProducts, null){
+
+        }
+        recycleBanner.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycleBanner.adapter = adapter
-        adapter?.listener = object : ProductsAndBannerAdapter.AddProductToBasket {
+        adapter.addProductlistener = object : ProductsAndBannerAdapter.AddProductToBasket {
             override fun onItemChoose(product: Product) {
                 totalPrice = totalPrice?.plus(product.price)
                 productsBasket += 1
@@ -160,7 +160,6 @@ class ProductsAndBannerFragment : Fragment() {
                 listProductsBasket,
                 totalPrice
             )
-
         }
     }
 }

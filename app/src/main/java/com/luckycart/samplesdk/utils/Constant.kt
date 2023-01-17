@@ -1,13 +1,13 @@
 package com.luckycart.samplesdk.utils
 
-const val AUTH_KEY = "ugjArgGw"
-const val CUSTOMER_ID = "customer1234"
+const val AUTH_KEY = "A2ei4iyi"
+const val CUSTOMER_ID = "tom004"
 const val BANNER_HOMEPAGE = "homepage"
 const val BANNER_CATEGORIES = "categories"
 const val SHOP_FRUITS = "fruit"
 const val SHOP_COFFEE = "coffee"
 const val CATEGORY_COFFEE_ID = "100"
-const val CATEGORY_FRUITS_ID = "200"
+const val CATEGORY_FRUITS_ID = "100"
 const val CART_ID = "sample-android-sdk"
 
 const val INTENT_FRAGMENT_SHOP_ID = "shopId"

@@ -17,8 +17,11 @@ class ApplicationSampleLuckyCart: Application() {
         luckyCartSDK = LuckCartSDK(applicationContext)
         luckyCartSDK?.init(auth, null)
         luckyCartSDK?.setUser(CUSTOMER_ID)
-        // get list of available banners when application start
-        luckyCartSDK?.listAvailableBanners()
-    }
+        // set PollingConfig (retryAfter and maxAttempts by API)
+        luckyCartSDK?.setPollingConfig(500L, 5)
 
+        // get list of available banners when application start
+        luckyCartSDK?.getBannersExperience(page_type = "Homepage", format = "banner")
+
+    }
 }

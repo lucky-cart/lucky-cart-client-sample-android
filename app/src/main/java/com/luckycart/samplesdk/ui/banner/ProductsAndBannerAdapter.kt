@@ -6,21 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.luckycart.model.BannerDetails
+import com.luckycart.model.Banner
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.Product
 import com.luckycart.samplesdk.ui.MainActivity
+import com.luckycart.samplesdk.utils.BANNER_CATEGORIES
 import kotlinx.android.synthetic.main.item_banner_sample.view.*
 import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductsAndBannerAdapter(
     var context: Context,
-    private var pageType: String?,
     private var listProduct: ArrayList<Product>,
-    private var listBanner: ArrayList<BannerDetails>?
+    private var listBanner: ArrayList<Banner>?,
+    val  listener: (Banner) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var listener: AddProductToBasket? = null
+    var addProductlistener: AddProductToBasket? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 0) ProductViewModel(LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false))
@@ -39,7 +40,7 @@ class ProductsAndBannerAdapter(
 
         fun bindViewProduct(item: Product) {
             itemView.btnAddCart.setOnClickListener {
-                listener?.onItemChoose(item)
+                addProductlistener?.onItemChoose(item)
             }
             itemView.txtName.text = item.name
             when (item.imageName) {
@@ -69,11 +70,11 @@ class ProductsAndBannerAdapter(
 
     inner class BannerViewModel(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindViewBanner(item: BannerDetails) {
-            val clickListner = View.OnClickListener {
-                (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.action?.ref, pageType, null, null)
+        fun bindViewBanner(item: Banner) {
+            val clickListener = View.OnClickListener {
+                (context as MainActivity).showFragment(ProductsAndBannerFragment(), item.operationId, BANNER_CATEGORIES, null, null)
             }
-            itemView.bannerView.setBannerParams(item, clickListner)
+            itemView.bannerView.setBannerParams(item, clickListener, listener)
         }
 
     }
