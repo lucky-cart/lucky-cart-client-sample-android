@@ -39,7 +39,8 @@ class HomeFragment : Fragment() {
                     bannerList.addAll(bannerState.bannerList)
 
                     banner_view_pager.visibility = View.VISIBLE
-                    mainViewModel.bannerDisplayed()
+                    if(bannerList.size >0)
+                        mainViewModel.pageDisplayed()
 
                     val offsetPx = resources.getDimension(R.dimen.pager_padding).toInt().dpToPx(resources.displayMetrics)
                     banner_view_pager.setPadding(offsetPx, 0, offsetPx, 0)

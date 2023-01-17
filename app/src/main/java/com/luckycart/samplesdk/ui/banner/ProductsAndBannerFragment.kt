@@ -57,8 +57,8 @@ class ProductsAndBannerFragment : Fragment() {
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
                     listBanner.add(bannerState.banner)
-
-                    mainViewModel.bannerDisplayed()
+                    if(listProducts.size >0)
+                        mainViewModel.pageDisplayed()
                     val adapter =  ProductsAndBannerAdapter(requireActivity(), listProducts, listBanner){
                         mainViewModel.bannerClicked(it)
                     }

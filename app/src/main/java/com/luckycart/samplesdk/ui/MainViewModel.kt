@@ -140,10 +140,10 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
         luckyCartSDK?.sendShopperEvent(AUTH_KEY, "bannerViewed", eventPayload)
     }
-    fun bannerDisplayed(){
+    fun pageDisplayed(){
         cardID = ""
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card")
-        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pageView", eventPayload)
+        luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pageViewed", eventPayload)
     }
     fun bannerClicked(banner : Banner){
         cardID = ""
