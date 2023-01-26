@@ -80,7 +80,6 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun loadShopBanner(pageId: String, pageType: String) {
         getBannerCategory = true
         if (pageType == BANNER_HOMEPAGE)
-
             luckyCartSDK?.getBannerExperienceDetail(BANNER_CATEGORIES, "banner", pageId)
         else {
             luckyCartSDK?.getBannerExperienceDetail(BANNER_CATEGORIES, "banner", pageId)
@@ -95,11 +94,13 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
             else -> {
                 if (pageType == SHOP_COFFEE || pageType == BANNER_HOMEPAGE) {
                     for (product in FakeData.coffees.products) {
-                        if (product.brand == FakeData.coffeeBrothers) listProduct.add(product)
+                        if (product.brand == FakeData.coffeeBrothers)
+                            listProduct.add(product)
                     }
                 } else {
                     for (product in FakeData.fruits.products) {
-                        if (product.brand == FakeData.queensBeverages) listProduct.add(product)
+                        if (product.brand == FakeData.queensBeverages)
+                            listProduct.add(product)
                     }
                 }
             }
@@ -144,9 +145,9 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
         luckyCartSDK?.sendShopperEvent(AUTH_KEY, "bannerViewed", eventPayload)
     }
-    fun pageDisplayed(pageType: String, bannerPosition:String){
+    fun pageDisplayed(pageType: String, pageId: String?, bannerPosition:String){
         cartEventName = CartEventName.PageViewed
-        val eventPayload =EventPayload(pageType = pageType,pageId = null,bannerType = "banner", bannerPosition = bannerPosition)
+        val eventPayload =EventPayload(pageType = pageType, pageId = pageId, bannerType = "banner", bannerPosition = bannerPosition)
         luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pageViewed", eventPayload)
     }
     fun bannerClicked(banner : Banner){

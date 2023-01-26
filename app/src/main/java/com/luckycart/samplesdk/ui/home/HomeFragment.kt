@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
 
-        mainViewModel.pageDisplayed("homepage", "homepage card")
+        mainViewModel.pageDisplayed("homepage",null, "homepage card")
 
         mainViewModel.postEventState.observe(viewLifecycleOwner) { eventName->
             if(eventName == CartEventName.PageViewed){

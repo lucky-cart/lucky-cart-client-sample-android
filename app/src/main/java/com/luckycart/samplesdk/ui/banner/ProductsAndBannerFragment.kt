@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_banner.*
 class ProductsAndBannerFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private var pageType = ""
-    private var shopId = ""
+    private var pageId = ""
     private var listProducts = ArrayList<Product>()
     private var totalPrice: Float? = 0.0F
     private var productsBasket: Int = 0
@@ -47,12 +47,12 @@ class ProductsAndBannerFragment : Fragment() {
             )
         }
         totalPrice = arguments?.getFloat(INTENT_FRAGMENT_CART_TTC)
-        shopId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
+        pageId = arguments?.getString(INTENT_FRAGMENT_SHOP_ID).toString()
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
-        listProducts.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
+        listProducts.addAll(mainViewModel.updateProductOfShopId(pageId, pageType))
         productsBasket = listProductsBasket.size
         val listBanner = ArrayList<Banner>()
-        mainViewModel.pageDisplayed(BANNER_CATEGORIES, "categories card")
+        mainViewModel.pageDisplayed(BANNER_CATEGORIES,pageId,  "categories card")
         mainViewModel.postEventState.observe(viewLifecycleOwner) { eventName->
         if(eventName == CartEventName.PageViewed){
 
@@ -103,13 +103,13 @@ class ProductsAndBannerFragment : Fragment() {
                 btnShop.visibility = View.VISIBLE
                 txtPrice.visibility = View.GONE
                 txtProduct.visibility = View.GONE
-                mainViewModel.loadShopBanner(shopId, pageType)
+                mainViewModel.loadShopBanner(pageId, pageType)
             } else {
-                mainViewModel.loadBannerCategory(shopId)
+                mainViewModel.loadBannerCategory(pageId)
             }
         when (pageType) {
             BANNER_CATEGORIES -> {
-                if (shopId == CATEGORY_COFFEE_ID) {
+                if (pageId == CATEGORY_COFFEE_ID) {
                     title.text = FakeData.coffees.name
                     pageType = SHOP_COFFEE
                 } else {
