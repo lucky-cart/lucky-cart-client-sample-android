@@ -55,7 +55,7 @@ class ProductsAndBannerFragment : Fragment() {
         initClickListener()
         val listBanner = ArrayList<Banner>()
 
-        mainViewModel.pageDisplayed()
+        mainViewModel.pageDisplayed(BANNER_CATEGORIES, "categories card")
         mainViewModel.postEventState.observe(viewLifecycleOwner) { eventName->
             if(eventName == CartEventName.PageViewed){
                 if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS) {
