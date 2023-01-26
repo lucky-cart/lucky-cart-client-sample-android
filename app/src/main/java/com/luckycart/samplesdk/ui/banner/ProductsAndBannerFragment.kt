@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.luckycart.model.Banner
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.model.*
+import com.luckycart.samplesdk.ui.CartEventName
 import com.luckycart.samplesdk.ui.GetBannerState
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
@@ -53,12 +54,27 @@ class ProductsAndBannerFragment : Fragment() {
         initView()
         initClickListener()
         val listBanner = ArrayList<Banner>()
+
+        mainViewModel.pageDisplayed()
+        mainViewModel.postEventState.observe(viewLifecycleOwner) { eventName->
+            if(eventName == CartEventName.PageViewed){
+                if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS) {
+                    btnCheckOut.visibility = View.GONE
+                    btnShop.visibility = View.VISIBLE
+                    txtPrice.visibility = View.GONE
+                    txtProduct.visibility = View.GONE
+                    mainViewModel.loadShopBanner(shopId, pageType)
+                } else {
+                    mainViewModel.loadBannerCategory(shopId)
+                }
+            }
+        }
+
         mainViewModel.getBannerDetails.observe(viewLifecycleOwner) { bannerState ->
             when (bannerState) {
                 is GetBannerState.OnSuccess -> {
                     listBanner.add(bannerState.banner)
-                    if(listProducts.size >0)
-                        mainViewModel.pageDisplayed()
+
                     val adapter =  ProductsAndBannerAdapter(requireActivity(), listProducts, listBanner){
                         mainViewModel.bannerClicked(it)
                     }
@@ -91,15 +107,6 @@ class ProductsAndBannerFragment : Fragment() {
     }
 
     private fun initView() {
-        if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS) {
-            btnCheckOut.visibility = View.GONE
-            btnShop.visibility = View.VISIBLE
-            txtPrice.visibility = View.GONE
-            txtProduct.visibility = View.GONE
-            mainViewModel.loadShopBanner(shopId, pageType)
-        } else {
-            mainViewModel.loadBannerCategory(shopId)
-        }
 
         when (pageType) {
             BANNER_CATEGORIES -> {

@@ -23,13 +23,19 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     var getBannerDetails: MutableLiveData<GetBannerState> = MediatorLiveData()
     var bannerExperienceState: MutableLiveData<BannerExperienceState> = MediatorLiveData()
+    var postEventState: MutableLiveData<CartEventName> = MediatorLiveData()
     private var getBannerCategory: Boolean = false
-    private var cardID: String = ""
+    var cartEventName: CartEventName = CartEventName.PageViewed
 
     fun setContext(context: Context) {
         mContext = context
         luckyCartSDK = (mContext.applicationContext as ApplicationSampleLuckyCart).luckyCartSDK
         luckyCartSDK?.setActionListener(this)
+    }
+
+    fun getBannerList(){
+        // get list of available banners when application start
+        luckyCartSDK?.getBannersExperience(page_type = "Homepage", format = "banner")
     }
 
     override fun onBannerListReceived(bannerList: List<Banner>) {
@@ -50,10 +56,12 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     override fun onPostEvent(success: String?) {
-        if(cardID == "cartValidated"){
+        if(cartEventName == CartEventName.CartValidated){
             val filters = arrayListOf<Filter>()
             filters.add(Filter(filterProperty = "cartId", cartIDTesting))
             luckyCartSDK?.getGamesAccess(siteKey = AUTH_KEY, count = 1, filters = GameFilter(filters = filters))
+        }else if(cartEventName == CartEventName.PageViewed){
+            postEventState.postValue(CartEventName.PageViewed)
         }
     }
 
@@ -105,7 +113,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     var cartIDTesting =""
     fun sendShopperEvent(productsShopping: ArrayList<Product>, totalPrice: Float){
-        cardID = "cartValidated"
+        cartEventName = CartEventName.PageViewed
         if(productsShopping.size >0) {
             val timesTamp = (Date().time / 1000)
             val products = arrayListOf<SDKProduct>()
@@ -136,19 +144,23 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     }
 
     fun bannerViewed(banner : Banner){
-        cardID = ""
+        cartEventName = CartEventName.BannerViewed
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
         luckyCartSDK?.sendShopperEvent(AUTH_KEY, "bannerViewed", eventPayload)
     }
     fun pageDisplayed(){
-        cardID = ""
+        cartEventName = CartEventName.PageViewed
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card")
         luckyCartSDK?.sendShopperEvent(AUTH_KEY, "pageViewed", eventPayload)
     }
     fun bannerClicked(banner : Banner){
-        cardID = ""
+        cartEventName = CartEventName.BannerClicked
         val eventPayload =EventPayload(pageType = "homepage",pageId = null,bannerType = "banner", bannerPosition = "homepage card", operationId = banner.operationId)
         luckyCartSDK?.sendShopperEvent(AUTH_KEY, "bannerClicked", eventPayload)
     }
+}
+
+enum class CartEventName {
+    PageViewed, BannerViewed, BannerClicked, CartValidated
 }
 

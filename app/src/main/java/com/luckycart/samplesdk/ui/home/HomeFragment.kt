@@ -12,6 +12,7 @@ import com.luckycart.model.Banner
 import com.luckycart.retrofit.BannerExperienceState
 import com.luckycart.samplesdk.R
 import com.luckycart.samplesdk.extension.dpToPx
+import com.luckycart.samplesdk.ui.CartEventName
 import com.luckycart.samplesdk.ui.MainActivity
 import com.luckycart.samplesdk.ui.MainViewModel
 import com.luckycart.samplesdk.ui.ShoppingFragment
@@ -31,6 +32,14 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModel()
 
+        mainViewModel.pageDisplayed()
+
+        mainViewModel.postEventState.observe(viewLifecycleOwner) { eventName->
+            if(eventName == CartEventName.PageViewed){
+                mainViewModel.getBannerList()
+            }
+        }
+
         mainViewModel.bannerExperienceState.observe(viewLifecycleOwner) { bannerState ->
 
             when (bannerState) {
@@ -39,8 +48,6 @@ class HomeFragment : Fragment() {
                     bannerList.addAll(bannerState.bannerList)
 
                     banner_view_pager.visibility = View.VISIBLE
-                    if(bannerList.size >0)
-                        mainViewModel.pageDisplayed()
 
                     val offsetPx = resources.getDimension(R.dimen.pager_padding).toInt().dpToPx(resources.displayMetrics)
                     banner_view_pager.setPadding(offsetPx, 0, offsetPx, 0)
