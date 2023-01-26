@@ -80,14 +80,10 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
     fun loadShopBanner(pageId: String, pageType: String) {
         getBannerCategory = true
         if (pageType == BANNER_HOMEPAGE)
-            Prefs(mContext).banners?.homepage?.forEach {
-                luckyCartSDK?.getBannerExperienceDetail(BANNER_CATEGORIES, "banner", pageId)
-            }
+
+            luckyCartSDK?.getBannerExperienceDetail(BANNER_CATEGORIES, "banner", pageId)
         else {
-            Prefs(mContext).banners?.categories?.forEach {
-                if (it.contains(pageId)) luckyCartSDK?.getBannerExperienceDetail(
-                    BANNER_CATEGORIES, "banner", pageId)
-            }
+            luckyCartSDK?.getBannerExperienceDetail(BANNER_CATEGORIES, "banner", pageId)
         }
     }
 
@@ -113,7 +109,7 @@ class MainViewModel : ViewModel(), LuckyCartListenerCallback {
 
     var cartIDTesting =""
     fun sendShopperEvent(productsShopping: ArrayList<Product>, totalPrice: Float){
-        cartEventName = CartEventName.PageViewed
+        cartEventName = CartEventName.CartValidated
         if(productsShopping.size >0) {
             val timesTamp = (Date().time / 1000)
             val products = arrayListOf<SDKProduct>()

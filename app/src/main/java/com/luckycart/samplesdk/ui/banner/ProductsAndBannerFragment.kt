@@ -51,23 +51,14 @@ class ProductsAndBannerFragment : Fragment() {
         pageType = arguments?.getString(INTENT_FRAGMENT_SHOP_TYPE).toString()
         listProducts.addAll(mainViewModel.updateProductOfShopId(shopId, pageType))
         productsBasket = listProductsBasket.size
-        initView()
-        initClickListener()
         val listBanner = ArrayList<Banner>()
-
         mainViewModel.pageDisplayed(BANNER_CATEGORIES, "categories card")
         mainViewModel.postEventState.observe(viewLifecycleOwner) { eventName->
-            if(eventName == CartEventName.PageViewed){
-                if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS) {
-                    btnCheckOut.visibility = View.GONE
-                    btnShop.visibility = View.VISIBLE
-                    txtPrice.visibility = View.GONE
-                    txtProduct.visibility = View.GONE
-                    mainViewModel.loadShopBanner(shopId, pageType)
-                } else {
-                    mainViewModel.loadBannerCategory(shopId)
-                }
-            }
+        if(eventName == CartEventName.PageViewed){
+
+            initView()
+            initClickListener()
+         }
         }
 
         mainViewModel.getBannerDetails.observe(viewLifecycleOwner) { bannerState ->
@@ -107,7 +98,15 @@ class ProductsAndBannerFragment : Fragment() {
     }
 
     private fun initView() {
-
+            if (pageType == BANNER_HOMEPAGE || pageType == SHOP_COFFEE || pageType == SHOP_FRUITS) {
+                btnCheckOut.visibility = View.GONE
+                btnShop.visibility = View.VISIBLE
+                txtPrice.visibility = View.GONE
+                txtProduct.visibility = View.GONE
+                mainViewModel.loadShopBanner(shopId, pageType)
+            } else {
+                mainViewModel.loadBannerCategory(shopId)
+            }
         when (pageType) {
             BANNER_CATEGORIES -> {
                 if (shopId == CATEGORY_COFFEE_ID) {
